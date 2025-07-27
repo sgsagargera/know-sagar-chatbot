@@ -1,43 +1,41 @@
+
 document.addEventListener("DOMContentLoaded", function () {
-  const form = document.querySelector("form");
-  const input = document.querySelector("input");
-  const messages = document.querySelector(".messages");
+  const form = document.getElementById("chat-form");
+  const questionInput = document.getElementById("question");
+  const messagesContainer = document.querySelector(".messages");
 
-  form.addEventListener("submit", async function (e) {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const question = input.value.trim();
 
+    const question = questionInput.value.trim();
     if (!question) return;
 
-    // Show user's question
-    const userDiv = document.createElement("div");
-    userDiv.textContent = question;
-    userDiv.classList.add("user-message");
-    messages.appendChild(userDiv);
+    const userMsg = document.createElement("div");
+    userMsg.className = "message user";
+    userMsg.textContent = question;
+    messagesContainer.appendChild(userMsg);
 
-    input.value = "";
+    questionInput.value = "";
 
-    // Call backend
     try {
       const response = await fetch("/ask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ question }) // ✅ Correct key
+        body: JSON.stringify({ question })
       });
 
       const data = await response.json();
-
-      const botDiv = document.createElement("div");
-      botDiv.textContent = data.answer || "No response";
-      botDiv.classList.add("bot-message");
-      messages.appendChild(botDiv);
-    } catch (err) {
-      const errorDiv = document.createElement("div");
-      errorDiv.textContent = "Error talking to bot.";
-      errorDiv.classList.add("bot-message");
-      messages.appendChild(errorDiv);
+      const botMsg = document.createElement("div");
+      botMsg.className = "message bot";
+      botMsg.textContent = data.answer || data.error || "No response from bot.";
+      messagesContainer.appendChild(botMsg);
+    } catch (error) {
+      const errorMsg = document.createElement("div");
+      errorMsg.className = "message bot";
+      errorMsg.textContent = "Error talking to bot.";
+      messagesContainer.appendChild(errorMsg);
     }
   });
 });
