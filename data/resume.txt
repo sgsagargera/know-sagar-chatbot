@@ -1,0 +1,205 @@
+Sagar Gera
+India
+Phone: 9509652323
+Email:sgsagarthebest@gmail.com
+
+Education
+B.tech in Computer Science,
+Guru Gobind Singh Indraprastha
+University, IN
+
+sgsagarthebest@gmail.com
+
+Profile
+• Having 5+ years of experience in Hybris Ecommerce Platform. • Experience in
+Catalog Management, PIM and creation of Data Models.
+• Strong knowledge in Cart Management, Checkout and Order processing.
+• Experience in creation of content data like page templates, pages, content
+slots and components.
+
+Digital Credentials
+
+• Experience in working with tools like HAC, Backoffice, Smartedit and Product
+Cockpits.
+
+Electronics Insights and
+Solutions (Bronze) - 2024
+
+• Implemented third party integrations like Payment gateway(Klarna,Paypal).
+
+Industry 4.0 Fundamentals - 2024
+SAP Certified Development
+Professional - SAP Commerce
+Cloud Developer 2023 - 2023
+SAP Certified Development
+Professional - SAP Commerce
+Cloud Developer 2023 - 2023
+Electronics Industry Jumpstart 2023
+
+• Implemented Custom Fraud Management.
+• Implemented Refurbished Sales System.
+• Implemented Custom Configurable Bundles.
+• Implemented Pre, Back and AutoBack orders.
+• Implemented Multiwarehouse functionality.
+• Implemented Marketplace Functionality.
+• Having Knowledge on Solr search.
+• Experience in creation of impex and groovy scripts to create/modify product
+and content data.
+• Worked on personalization, localization and configuration management.
+
+Languages
+English - Fluent
+Hindi - Fluent
+
+• Lead the deployment process for various environments.
+• Experience in developing Web Applications using Spring MVC.
+• Backoffice Customization
+• Experience in restful Web services.
+• Having knowledge on Design Patterns.
+
+Industry Experience
+Electronics - Expert
+
+• Agile Methodology and DevOps
+• SAP Commerce Developer Certification
+• Core Platform Customization
+• Extensions & Integrations
+• Performance Optimization
+• Troubleshooting and Debugging
+• Flexible Search
+• Data Modeling and Persistence Layer
+
+Key skills
+Ecommerce Platform: Hybris 1811, 1905,
+2011(Spartacus),2205(Spartacus),2211(Spartacus)
+Languages: Java , J2ee
+Framework: Spring MVC, web services, Hybris
+Development Tools: IntelliJ
+Database: Oracle
+Configuration Mgmt: Tortoise Git, SourceTree
+Scripting Languages: JavaScript, HTML and XML.
+Methodologies: Agile
+
+Key courses and training
+As a certified SAP Commerce developer with over 5 years of hands-on
+experience, I thrive on creating e-commerce solutions that seamlessly merge
+innovation and functionality. My expertise lies in customizing and extending SAP
+Commerce to deliver exceptional user experiences and drive online success.
+
+Work experience
+Application Developer
+
+IBM, India | Dec 2021 - Present
+Working as hybris developer for Sony.
+
+Programmer Analyst
+Cognizant, India | Nov 2019 - Dec 2021
+Worked as hybris developer for Johnson & Johnson and Sanofi
+
+Assignment history
+Application Developer
+
+Sony, India | Dec 2021 - Present
+Project name: Sony D2C SEU
+Sony D2C Site is a direct to customer eCommerce store to sell consumer
+electronics products in Europe. It is currently live in UK and Germany France
+rollout has been started in last month) and business is planning to expand it to
+whole Europe.
+
+• Business Objective:
+1. Business plans to sell electronic products directly to consumer in Europe to
+position SONY brand in retail directly.
+2. Customer/Brand engagement.
+3. Less reliance on other channels.
+
+• Type of Work: New Development + Enhancement + Maintenance
+Contribution
+• Provided estimation and risk analysis/mitigation for the stories assigned to me.
+• Explaining functionality to QA testers and get them aligned on the stories that
+are developed.
+•Analysis, Design and Implementation of the requirements and provide the
+estimations.
+•Involved in Gap Analysis to implement new hybris project using existing
+ecommerce features.
+•Involved in the requirement gathering. •Configuration files for maintaining
+Product Information in HAC and Cockpit.
+•Hybris Patch Upgrade for 2211 -32 version.
+•Created the Catalog, Category, page,etc Impex creation.
+•Wrote impex/groovy scripts.
+•Created Cronjobs for importing product details from external systems and
+sending user data to 3rd party systems.
+• Developed and fixed multiple epics(end to end), stories and bugs related to the
+following epics:
+->Refurbished/Graded functionality: Selling of refurbished products, creating
+products and subsequent functionalities to incorporate those in the existing D2C
+site. That included creating separate outlet page on website just for refurbished
+products, separate search for the same, changing logic related to product, cart,
+price calculation, product creation and providing new fields for frontend to show
+graded functionality on storefront.
+->Closed Shop Functionality: Developed stories related to closed shop(Set of
+usergroups with privelages) to show data such as promotions, bundles,
+restrcitions, etc visible only to those usergroups. Unidays implementation:
+Integraded Unidays with Sony site.
+->Promotions improvements and fixes.
+->Worked on building logic for Pre, Back and Auto Back ordering for products,
+their checkout journey, reserve and release functionality.
+->Worked on implementing customized Fraud Management requirement for the
+project with Backoffice customizations for the same.
+->Worked on customizing OOTB Configurable Bundle Funtionality.
+->Developed Price Spider functionality.
+->Developed Multiwarehouse functionality.
+->Developed Marketplace functionality to sell sony products on different
+marketplaces. Sending product data to marketplaces, receiving orders and
+sending fulfillment updates.
+->Have also worked on multiple bugs related to existing functionalities such as
+checkout, payments, search, etc.
+
+Programmer Analyst
+Johnson & Johnson, India | Apr 2020 - Dec 2021
+
+Project name: Johnson & Johnson- North America
+Johnson & Johnson (J&J) is an American multinational corporation that develops
+medical devices, pharmaceuticals, and consumer packaged goods. The project
+was for enhancement and support for the JNJ North America B2B e-commerce
+site.
+Contribution
+• Analysis, Design and Implementation of the requirements and provide the
+estimations.
+• Implemented different types of controllers, services and facades for the
+request processing.
+• Created Impex files for importing the Healthcare products into the Hybris
+System.
+• Created the different Units, user groups, users and applied restrictions group
+level and user level as per the requirement.
+• Involved in Customization of cart management and checkout process as per
+the requirements.
+• Involved in Creation of country specific category structure in product
+catalog.
+• Involved in creation of new data models and customization of existing data
+models.
+• Involved in creation of components and changes in jsp, controllers for Contact
+us page as per requirement.
+• Created Custom Components and applying subscription offers to the
+component level.
+• Created content and email page templates and prepare the impex to include
+the data in different formats.
+• Developed cronjobs
+• Take the active role in deployment process for different environments.
+
+Programmer Analyst Trainee
+
+Sanofi, India | Dec 2019 - Apr 2020
+Project name: Sanofi
+Sanofi engages in the research and development, manufacturing and marketing
+of pharmacological products, principally in the prescription market, but the firm
+also develops over-the-counter medications. The Project focused on creating ecommerce site for Sanofi.
+Contribution
+• Analysis, Design and Implementation of the use cases
+• Developed the web services for Customer Management and Order
+Management.
+• Implemented web service for interact with third party system from B2B
+Module.
+• Involved in Unit testing
+• Created Impex files for Importing User groups into the Systems.
+
+
