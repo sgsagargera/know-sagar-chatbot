@@ -8,7 +8,14 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const resumeText = fs.readFileSync(path.join(__dirname, 'data', 'resume.txt'), 'utf-8');
+//const resumeText = fs.readFileSync(path.join(__dirname, 'data', 'resume.txt'), 'utf-8');
+let resumeText = '';
+try {
+  resumeText = fs.readFileSync(path.join(__dirname, 'data', 'resume.txt'), 'utf-8');
+} catch (err) {
+  console.error('Could not load resume.txt:', err.message);
+  resumeText = 'Resume not available.';
+}
 
 app.use(cors());
 app.use(express.json());
