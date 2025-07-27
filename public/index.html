@@ -2,46 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sagar Gera Chatbot</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div id="chat-button" class="chat-launch-btn">💬</div>
 
-<!-- Theme Toggle -->
-<div class="theme-toggle">
-  <label class="switch">
-    <input type="checkbox" id="themeToggle">
-    <span class="slider"></span>
-  </label>
-</div>
+  <div class="chat-popup" id="chat-popup">
+    <div class="chat-header">
+      <h3>SagarBot</h3>
+      <button class="close-btn" id="close-popup">&times;</button>
+    </div>
 
-<!-- Floating Chat Button -->
-<button id="chat-toggle" class="chat-toggle">💬</button>
+    <div class="chat-body" id="messages"></div>
+    <div id="typing-indicator" class="typing-indicator" style="display:none;">Sagar is typing<span>.</span><span>.</span><span>.</span></div>
 
-<!-- Chat Popup -->
-<div class="chat-popup hidden" id="chat-popup">
-  <div class="chat-header">
-    <h2>Ask Sagar Gera</h2>
-    <button id="close-chat" class="close-btn">×</button>
+    <form id="chat-form">
+      <input type="text" id="question" placeholder="Ask me about Sagar..." required />
+      <button type="submit">Send</button>
+    </form>
+    
+    <div class="chat-footer">
+      <button id="export-chat" title="Export Chat">📁 Export</button>
+      <button id="clear-chat" title="Clear Chat">🗑️ Clear</button>
+    </div>
   </div>
 
-  <div class="messages" id="messages"></div>
-  <div class="typing-indicator" id="typing-indicator" style="display:none;">Sagar is typing<span>.</span><span>.</span><span>.</span></div>
-
-  <form id="chat-form" autocomplete="off">
-    <input type="text" id="question" placeholder="Ask about Sagar..." required />
-    <button type="submit">Send</button>
-  </form>
-
-  <div class="chat-footer">
-    <button id="clear-chat">🗑️ Clear</button>
-    <button id="export-chat">⬇️ Export</button>
-    <a href="https://www.linkedin.com/in/sagar-gera-374089100" class="linkedin-link" target="_blank">🔗 LinkedIn</a>
-  </div>
-</div>
-
-<script src="chatbot.js"></script>
+  <script src="chatbot.js"></script>
 </body>
 </html>
