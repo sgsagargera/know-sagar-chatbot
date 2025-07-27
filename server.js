@@ -3,7 +3,6 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
-
 const axios = require('axios');
 
 const app = express();
@@ -20,7 +19,7 @@ try {
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve static frontend files from "public" folder
+// ✅ Serve static frontend files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ✅ Home route
@@ -39,7 +38,7 @@ app.post('/ask', async (req, res) => {
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'openrouter/openai/gpt-3.5-turbo',
+        model: 'openai/gpt-3.5-turbo',  // ✅ Corrected model name
         messages: [
           {
             role: 'system',
@@ -65,8 +64,10 @@ app.post('/ask', async (req, res) => {
         status: error.response.status,
         data: error.response.data,
       });
+    } else if (error.request) {
+      console.error('❌ No response received from OpenRouter:', error.request);
     } else {
-      console.error('❌ General Error:', error.message || error);
+      console.error('❌ Error setting up request to OpenRouter:', error.message);
     }
     res.status(500).json({ error: 'Error talking to bot.' });
   }
