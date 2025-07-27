@@ -1,85 +1,88 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const themeToggle = document.getElementById('themeToggle');
-  const chatBody = document.getElementById('chat-body');
-  const sendBtn = document.getElementById('send-btn');
-  const input = document.getElementById('chat-input');
-  const typing = document.getElementById('typing-indicator');
-  const exportBtn = document.getElementById('export-btn');
-  const clearBtn = document.getElementById('clear-btn');
+document.addEventListener("DOMContentLoaded", () => {
+  const chatInput = document.getElementById("chat-input");
+  const chatBody = document.getElementById("chat-body");
+  const typingIndicator = document.getElementById("typing-indicator");
 
-  // Dark mode
+  const themeToggle = document.getElementById("themeToggle");
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
     themeToggle.checked = true;
   }
-
   themeToggle.addEventListener('change', () => {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
   });
 
-  // Chat
-  function appendMessage(role, text) {
-    const bubble = document.createElement('div');
-    bubble.classList.add('chat-bubble', role);
+  const sendButton = document.getElementById("send-btn");
+  const clearBtn = document.getElementById("clear-btn");
+  const exportBtn = document.getElementById("export-btn");
 
-    const avatar = document.createElement('div');
-    avatar.classList.add('avatar');
-    avatar.style.backgroundImage = role === 'user'
-      ? 'url(https://cdn-icons-png.flaticon.com/512/149/149071.png)' // user avatar
-      : 'url(https://cdn-icons-png.flaticon.com/512/4712/4712106.png)'; // bot avatar
+  const botAvatar = "20250418_212238.jpg"; // <-- use your uploaded image
+  const userAvatar = "https://www.svgrepo.com/show/384674/user-chat.svg";
 
-    const message = document.createElement('div');
-    message.classList.add('text');
+  const appendMessage = (text, sender = "bot") => {
+    const bubble = document.createElement("div");
+    bubble.className = `chat-bubble ${sender}`;
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.style.backgroundImage = `url(${sender === "user" ? userAvatar : botAvatar})`;
+
+    const message = document.createElement("div");
+    message.className = "text";
     message.textContent = text;
 
-    bubble.appendChild(role === 'user' ? message : avatar);
-    bubble.appendChild(role === 'user' ? avatar : message);
-
+    bubble.appendChild(avatar);
+    bubble.appendChild(message);
     chatBody.appendChild(bubble);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
+    bubble.scrollIntoView({ behavior: "smooth" });
+  };
 
-  sendBtn.addEventListener('click', async () => {
-    const question = input.value.trim();
+  const sendMessage = async () => {
+    const question = chatInput.value.trim();
     if (!question) return;
 
-    appendMessage('user', question);
-    input.value = '';
-    typing.style.display = 'block';
+    appendMessage(question, "user");
+    chatInput.value = "";
+    typingIndicator.style.display = "block";
 
     try {
-      const res = await fetch('/ask', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question })
       });
 
       const data = await res.json();
+      typingIndicator.style.display = "none";
 
-      setTimeout(() => {
-        typing.style.display = 'none';
-        appendMessage('bot', data.answer || 'Sorry, I could not get a response.');
-      }, 800); // Typing delay
-    } catch (e) {
-      typing.style.display = 'none';
-      appendMessage('bot', '❌ Error talking to bot.');
+      await new Promise(resolve => setTimeout(resolve, 600)); // Delay simulation
+      appendMessage(data.answer || "Sorry, I couldn't fetch a response.", "bot");
+
+    } catch (err) {
+      typingIndicator.style.display = "none";
+      appendMessage("❌ Error talking to bot.", "bot");
+    }
+  };
+
+  sendButton.addEventListener("click", sendMessage);
+  chatInput.addEventListener("keypress", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendMessage();
     }
   });
 
-  // Export
-  exportBtn.addEventListener('click', () => {
-    const messages = [...chatBody.querySelectorAll('.text')].map((el) => el.textContent);
-    const blob = new Blob([messages.join('\n')], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = 'chat-log.txt';
-    anchor.click();
-  });
+  clearBtn.addEventListener("click", () => chatBody.innerHTML = "");
 
-  // Clear
-  clearBtn.addEventListener('click', () => {
-    chatBody.innerHTML = '';
+  exportBtn.addEventListener("click", () => {
+    const logs = [...chatBody.querySelectorAll(".chat-bubble")]
+      .map(el => el.querySelector(".text")?.textContent || "")
+      .join("\n\n");
+    const blob = new Blob([logs], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "chat_log.txt";
+    a.click();
   });
 });
