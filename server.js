@@ -4,10 +4,6 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-console.log("ENV CHECK:", process.env);
-console.log("✅ ENV CHECK:", process.env.OPENAI_API_KEY ? "Present" : "Missing");
-
-
 const OpenAI = require('openai');
 
 const app = express();
