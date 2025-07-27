@@ -56,9 +56,18 @@ app.post('/ask', async (req, res) => {
     res.json({ answer });
 
   } catch (error) {
-    console.error('❌ OpenAI Error:', error.message);
-    res.status(500).json({ error: 'Error talking to bot.' });
+  if (error.response) {
+    // OpenAI API error with response details
+    console.error('❌ OpenAI API Error:', {
+      status: error.response.status,
+      data: error.response.data,
+    });
+  } else {
+    // General error (network, etc.)
+    console.error('❌ General Error:', error.message || error);
   }
+  res.status(500).json({ error: 'Error talking to bot.' });
+}
 });
 
 // ✅ Start server
