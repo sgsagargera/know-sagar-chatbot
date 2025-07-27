@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sagar Gera – Virtual CV</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    .cta-link {
+      text-align: center;
+      margin-top: 40px;
+    }
+    .cta-link a {
+      background: #e50914;
+      color: white;
+      text-decoration: none;
+      padding: 14px 28px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+      display: inline-block;
+    }
+    .cta-link a:hover {
+      background: #b20710;
+    }
+  </style>
+</head>
+<body>
+  <header>Sagar Gera – Virtual CV</header>
+  <div class="cta-link">
+    <a href="index.html">⬅ Back to Chatbot</a>
+  </div>
+
+  <!-- Existing content preserved below -->
+  <!-- ... -->
+
+  <script>
+    const cards = document.querySelectorAll('.card');
+    const grid = document.getElementById('sectionGrid');
+    const details = document.querySelectorAll('.details');
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        grid.style.display = 'none';
+        document.getElementById(card.dataset.section).classList.add('active');
+      });
+    });
+
+    function goBack() {
+      grid.style.display = 'grid';
+      details.forEach(d => d.classList.remove('active'));
+    }
+  </script>
+</body>
+</html>
 <!-- Insert your full Virtual CV HTML here from canvas -->
