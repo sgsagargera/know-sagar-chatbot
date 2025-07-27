@@ -119,3 +119,80 @@
     <div class="card" data-section="certifications"><span>Certifications</span></div>
     <div class="card" data-section="tools"><span>Tools & Methodologies</span></div>
   </div>
+    <div class="details" id="experience">
+    <h2>Work Experience</h2>
+    <ul>
+      <li><strong>IBM – Hybris Developer (Sony)</strong><br>Dec 2021 – Present</li>
+      <li><strong>Cognizant – Hybris Developer (J&J, Sanofi)</strong><br>Nov 2019 – Dec 2021</li>
+    </ul>
+    <button class="back-btn" onclick="goBack()">Back</button>
+  </div>
+
+  <div class="details" id="projects">
+    <h2>Key Projects</h2>
+    <ul>
+      <li>Sony D2C Europe Rollout</li>
+      <li>Refurbished Sales, Multiwarehouse, Marketplace</li>
+      <li>Fraud Mgmt, Closed Shop, Configurable Bundles</li>
+    </ul>
+    <button class="back-btn" onclick="goBack()">Back</button>
+  </div>
+
+  <div class="details" id="skills">
+    <h2>Technical Skills</h2>
+    <ul>
+      <li>SAP Hybris 1811–2211</li>
+      <li>Java, Spring MVC, REST</li>
+      <li>Oracle, Impex, Groovy</li>
+      <li>SmartEdit, Backoffice, Solr</li>
+    </ul>
+    <button class="back-btn" onclick="goBack()">Back</button>
+  </div>
+
+  <div class="details" id="education">
+    <h2>Education</h2>
+    <p>B.Tech in Computer Science – Guru Gobind Singh Indraprastha University</p>
+    <button class="back-btn" onclick="goBack()">Back</button>
+  </div>
+
+  <div class="details" id="certifications">
+    <h2>Certifications</h2>
+    <ul>
+      <li>SAP Commerce Cloud Developer (2023)</li>
+      <li>Industry 4.0 Fundamentals</li>
+      <li>Electronics Insights & Jumpstart</li>
+    </ul>
+    <button class="back-btn" onclick="goBack()">Back</button>
+  </div>
+
+  <div class="details" id="tools">
+    <h2>Tools & Methodologies</h2>
+    <ul>
+      <li>IntelliJ, SourceTree, Git</li>
+      <li>Agile, DevOps</li>
+      <li>Backoffice Customization</li>
+      <li>Performance Optimization</li>
+    </ul>
+    <button class="back-btn" onclick="goBack()">Back</button>
+  </div>
+
+  <script>
+    const cards = document.querySelectorAll('.card');
+    const grid = document.getElementById('sectionGrid');
+    const details = document.querySelectorAll('.details');
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        grid.style.display = 'none';
+        document.getElementById(card.dataset.section).classList.add('active');
+      });
+    });
+
+    function goBack() {
+      grid.style.display = 'grid';
+      details.forEach(d => d.classList.remove('active'));
+    }
+  </script>
+</body>
+</html>
+
