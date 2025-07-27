@@ -1,65 +1,69 @@
-
-document.addEventListener("DOMContentLoaded", function () {
-  const toggleBtn = document.getElementById("chat-toggle");
+document.addEventListener("DOMContentLoaded", () => {
+  const openBtn = document.getElementById("chat-button");
+  const closeBtn = document.getElementById("close-popup");
   const popup = document.getElementById("chat-popup");
-  const closeBtn = document.getElementById("close-chat");
   const form = document.getElementById("chat-form");
-  const questionInput = document.getElementById("question");
   const messages = document.getElementById("messages");
-  const typingIndicator = document.getElementById("typing-indicator");
+  const questionInput = document.getElementById("question");
+  const typing = document.getElementById("typing-indicator");
   const clearBtn = document.getElementById("clear-chat");
   const exportBtn = document.getElementById("export-chat");
 
-  toggleBtn.addEventListener("click", () => popup.classList.remove("hidden"));
-  closeBtn.addEventListener("click", () => popup.classList.add("hidden"));
+  openBtn.addEventListener("click", () => popup.style.display = "flex");
+  closeBtn.addEventListener("click", () => popup.style.display = "none");
+
+  const delayTyping = (text, container) => {
+    typing.style.display = "block";
+    setTimeout(() => {
+      typing.style.display = "none";
+      const botMsg = document.createElement("div");
+      botMsg.className = "chat-bubble bot";
+      botMsg.textContent = text;
+      container.appendChild(botMsg);
+      botMsg.scrollIntoView({ behavior: "smooth" });
+    }, 1200);
+  };
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const question = questionInput.value.trim();
     if (!question) return;
 
-    appendBubble(question, 'user');
-    questionInput.value = '';
+    const userMsg = document.createElement("div");
+    userMsg.className = "chat-bubble user";
+    userMsg.textContent = question;
+    messages.appendChild(userMsg);
+    userMsg.scrollIntoView({ behavior: "smooth" });
 
-    typingIndicator.style.display = 'block';
-
-    // Simulate typing delay
-    await new Promise(res => setTimeout(res, 1000));
+    questionInput.value = "";
 
     try {
       const res = await fetch("/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question })
+        body: JSON.stringify({ question }),
       });
 
       const data = await res.json();
-      typingIndicator.style.display = 'none';
-      appendBubble(data.answer || 'No response from bot.', 'bot');
-    } catch (error) {
-      typingIndicator.style.display = 'none';
-      appendBubble("❌ Error talking to bot.", 'bot');
+      delayTyping(data.answer || "Sorry, I couldn’t understand that.", messages);
+    } catch (err) {
+      delayTyping("❌ Error talking to bot.", messages);
     }
   });
 
-  function appendBubble(text, sender) {
-    const div = document.createElement("div");
-    div.className = `chat-bubble ${sender}`;
-    div.textContent = text;
-    messages.appendChild(div);
-    div.scrollIntoView({ behavior: "smooth" });
-  }
-
-  clearBtn.addEventListener("click", () => messages.innerHTML = '');
+  clearBtn.addEventListener("click", () => {
+    messages.innerHTML = "";
+  });
 
   exportBtn.addEventListener("click", () => {
-    const logs = Array.from(messages.children)
-      .map(el => `${el.classList.contains("user") ? "You" : "Bot"}: ${el.textContent}`)
-      .join('\n');
+    const logs = Array.from(messages.querySelectorAll(".chat-bubble"))
+      .map(el => (el.classList.contains("user") ? "You: " : "SagarBot: ") + el.textContent)
+      .join("\n");
+    
     const blob = new Blob([logs], { type: "text/plain" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "chat_log.txt";
-    link.click();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "sagar-chat-history.txt";
+    a.click();
   });
 });
