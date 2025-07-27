@@ -186,3 +186,42 @@ input:checked + .slider:before {
   padding: 4px;
   opacity: 0.6;
 }
+/* Existing styles... */
+
+.chat-bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  animation: fadeIn 0.3s ease-in-out;
+  transition: all 0.3s ease;
+}
+
+.chat-bubble .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.chat-bubble .text {
+  background: #eaf5ff;
+  color: #222;
+  padding: 10px 14px;
+  border-radius: 18px;
+  line-height: 1.4;
+  max-width: 240px;
+  transition: all 0.3s ease;
+}
+
+.chat-bubble.user .text {
+  background: #0a66c2;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
