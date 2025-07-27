@@ -64,6 +64,13 @@
   </div>
 
   <script>
+    document.getElementById("query").addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        respond();
+      }
+    });
+
     function respond() {
       const query = document.getElementById('query').value.toLowerCase();
       const responseBox = document.getElementById('response');
@@ -71,17 +78,21 @@
       let response = '';
 
       if (query.includes('experience')) {
-        response = "I've worked at IBM and Cognizant as a Hybris Developer.";
+        response = "I've worked at IBM (Sony Project) and Cognizant (J&J, Sanofi) as a Hybris Developer since 2019.";
       } else if (query.includes('project')) {
-        response = "Projects? Oh, Sony D2C, Refurb Sales, Closed Shop – been there, built that.";
-      } else if (query.includes('skills')) {
-        response = "Skills sharper than a sushi knife: Java, Spring, Hybris, Solr, and a pinch of Oracle.";
+        response = "I've led projects like Sony D2C rollout, Refurbished Sales, Multiwarehouse Marketplace, Fraud Management, and Configurable Bundles.";
+      } else if (query.includes('skill')) {
+        response = "Skilled in Java, Spring MVC, SAP Hybris 1811–2211, REST, Oracle, Impex, Groovy, SmartEdit, Backoffice, and Solr.";
       } else if (query.includes('education')) {
-        response = "Graduate in Computer Science from GGSIPU – geeked out and graduated.";
+        response = "I hold a B.Tech in Computer Science from Guru Gobind Singh Indraprastha University.";
       } else if (query.includes('certification')) {
-        response = "Certified SAP Commerce Cloud Developer – yes, the real deal.";
+        response = "Certified SAP Commerce Cloud Developer, with additional courses in Industry 4.0 and Electronics Insights.";
+      } else if (query.includes('tools') || query.includes('methodology')) {
+        response = "I use IntelliJ, SourceTree, Git, and follow Agile and DevOps practices with deep expertise in performance optimization and backoffice customization.";
+      } else if (query.includes('about') || query.includes('who are you')) {
+        response = "I’m Sagar Gera, a seasoned SAP Commerce/Hybris Developer passionate about building e-commerce platforms that work like magic.";
       } else {
-        response = "I'm not sure, but you can discover more in my virtual CV.";
+        response = "That’s a great question! You’ll find the answer in my virtual CV. Click below to explore.";
       }
 
       responseBox.textContent = response;
