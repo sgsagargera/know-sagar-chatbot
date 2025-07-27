@@ -1,4 +1,45 @@
 
+// Speech recognition support
+const mic = document.getElementById("mic");
+if ('webkitSpeechRecognition' in window) {
+  const recognition = new webkitSpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = "en-US";
+
+  mic.onclick = () => {
+    recognition.start();
+    mic.disabled = true;
+    mic.innerText = "🎙️ Listening...";
+  };
+
+  recognition.onresult = (e) => {
+    document.getElementById("query").value = e.results[0][0].transcript;
+    recognition.stop();
+    mic.innerText = "🎤";
+    mic.disabled = false;
+  };
+
+  recognition.onerror = () => {
+    mic.innerText = "🎤";
+    mic.disabled = false;
+    recognition.stop();
+  };
+}
+
+
+
+// Log query (mock)
+function logQuery(query) {
+  fetch("https://example.com/log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question: query, timestamp: new Date().toISOString() })
+  });
+}
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const queryInput = document.getElementById("query");
   const responseBox = document.getElementById("response");
