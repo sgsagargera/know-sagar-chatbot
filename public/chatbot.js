@@ -1,43 +1,30 @@
+
 document.addEventListener("DOMContentLoaded", function () {
+  const toggleBtn = document.getElementById("chat-toggle");
+  const popup = document.getElementById("chat-popup");
+  const closeBtn = document.getElementById("close-chat");
   const form = document.getElementById("chat-form");
   const questionInput = document.getElementById("question");
   const messages = document.getElementById("messages");
   const typingIndicator = document.getElementById("typing-indicator");
-  const themeToggle = document.getElementById("themeToggle");
+  const clearBtn = document.getElementById("clear-chat");
+  const exportBtn = document.getElementById("export-chat");
 
-  // Restore theme from localStorage
-  if (localStorage.getItem("darkMode") === "enabled") {
-    document.body.classList.add("dark-mode");
-    themeToggle.checked = true;
-  }
-
-  // Toggle dark mode
-  themeToggle.addEventListener("change", () => {
-    document.body.classList.toggle("dark-mode");
-    if (document.body.classList.contains("dark-mode")) {
-      localStorage.setItem("darkMode", "enabled");
-    } else {
-      localStorage.removeItem("darkMode");
-    }
-  });
+  toggleBtn.addEventListener("click", () => popup.classList.remove("hidden"));
+  closeBtn.addEventListener("click", () => popup.classList.add("hidden"));
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const question = questionInput.value.trim();
     if (!question) return;
 
-    // User chat bubble
-    const userBubble = document.createElement("div");
-    userBubble.className = "chat-bubble user";
-    userBubble.textContent = question;
-    messages.appendChild(userBubble);
+    appendBubble(question, 'user');
+    questionInput.value = '';
 
-    scrollToBottom();
-    questionInput.value = "";
+    typingIndicator.style.display = 'block';
 
-    // Show typing indicator
-    typingIndicator.style.display = "block";
+    // Simulate typing delay
+    await new Promise(res => setTimeout(res, 1000));
 
     try {
       const res = await fetch("/ask", {
@@ -47,27 +34,32 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       const data = await res.json();
-      typingIndicator.style.display = "none";
-
-      const botBubble = document.createElement("div");
-      botBubble.className = "chat-bubble bot";
-      botBubble.textContent = data.answer || data.error || "No response from bot.";
-      messages.appendChild(botBubble);
-
-      scrollToBottom();
+      typingIndicator.style.display = 'none';
+      appendBubble(data.answer || 'No response from bot.', 'bot');
     } catch (error) {
-      typingIndicator.style.display = "none";
-
-      const errorBubble = document.createElement("div");
-      errorBubble.className = "chat-bubble error";
-      errorBubble.textContent = "❌ Error talking to bot.";
-      messages.appendChild(errorBubble);
-
-      scrollToBottom();
+      typingIndicator.style.display = 'none';
+      appendBubble("❌ Error talking to bot.", 'bot');
     }
   });
 
-  function scrollToBottom() {
-    messages.scrollTop = messages.scrollHeight;
+  function appendBubble(text, sender) {
+    const div = document.createElement("div");
+    div.className = `chat-bubble ${sender}`;
+    div.textContent = text;
+    messages.appendChild(div);
+    div.scrollIntoView({ behavior: "smooth" });
   }
+
+  clearBtn.addEventListener("click", () => messages.innerHTML = '');
+
+  exportBtn.addEventListener("click", () => {
+    const logs = Array.from(messages.children)
+      .map(el => `${el.classList.contains("user") ? "You" : "Bot"}: ${el.textContent}`)
+      .join('\n');
+    const blob = new Blob([logs], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "chat_log.txt";
+    link.click();
+  });
 });

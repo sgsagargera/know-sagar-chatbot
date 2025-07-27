@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,109 +9,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="theme-toggle">
-    <label class="switch" aria-label="Toggle dark mode">
-      <input type="checkbox" id="themeToggle" />
-      <span class="slider"></span>
-    </label>
+
+<!-- Floating Button -->
+<button id="chat-toggle" class="chat-toggle">💬</button>
+
+<!-- Chat Popup -->
+<div class="chat-popup hidden" id="chat-popup">
+  <div class="chat-header">
+    <h2>Ask Sagar Gera</h2>
+    <button id="close-chat" class="close-btn">×</button>
   </div>
-
-  <div class="container">
-    <header>
-      <h1 class="title">🤖 Ask Sagar Gera</h1>
-      <a href="https://www.linkedin.com/in/sagar-gera-374089100" target="_blank" class="linkedin-btn">
-        View LinkedIn Profile
-      </a>
-    </header>
-
-    <main>
-      <form id="chat-form" autocomplete="off" aria-label="Ask Sagar chatbot">
-        <input 
-          type="text" 
-          id="question" 
-          placeholder="Ask me anything about Sagar..." 
-          required 
-          aria-label="Your question"
-        />
-        <button type="submit" aria-label="Send question to chatbot">Send</button>
-      </form>
-
-      <div class="messages" id="messages" aria-live="polite" role="log"></div>
-      <div class="typing-indicator" id="typing-indicator" style="display: none;" aria-hidden="true">
-        Sagar is typing<span>.</span><span>.</span><span>.</span>
-      </div>
-
-      <button id="clear-chat" class="clear-btn" aria-label="Clear chat history">🗑️ Clear Chat</button>
-    </main>
-
-    <footer>
-      <p class="footer-text">Built with ❤️ by <strong>Sagar Gera</strong></p>
-    </footer>
+  <div class="messages" id="messages"></div>
+  <div class="typing-indicator" id="typing-indicator" style="display:none;">Sagar is typing<span>.</span><span>.</span><span>.</span></div>
+  <form id="chat-form" autocomplete="off">
+    <input type="text" id="question" placeholder="Ask about Sagar..." required />
+    <button type="submit">Send</button>
+  </form>
+  <div class="chat-footer">
+    <button id="clear-chat">🗑️</button>
+    <button id="export-chat">📁</button>
   </div>
+</div>
 
-  <script src="chatbot.js"></script>
-  <script>
-    // Theme toggle with localStorage
-    const toggle = document.getElementById('themeToggle');
-    if (localStorage.getItem('theme') === 'dark') {
-      document.body.classList.add('dark-mode');
-      toggle.checked = true;
-    }
-    toggle.addEventListener('change', () => {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    });
-
-    // Chat logic
-    const form = document.getElementById('chat-form');
-    const questionInput = document.getElementById('question');
-    const messages = document.getElementById('messages');
-    const typingIndicator = document.getElementById('typing-indicator');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const question = questionInput.value.trim();
-      if (!question) return;
-
-      const userBubble = document.createElement('div');
-      userBubble.className = 'chat-bubble user';
-      userBubble.textContent = question;
-      messages.appendChild(userBubble);
-      userBubble.scrollIntoView({ behavior: 'smooth' });
-
-      questionInput.value = '';
-      typingIndicator.style.display = 'inline-flex';
-
-      try {
-        const res = await fetch('/ask', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question })
-        });
-
-        const data = await res.json();
-        typingIndicator.style.display = 'none';
-
-        const botBubble = document.createElement('div');
-        botBubble.className = 'chat-bubble bot';
-        botBubble.textContent = data.answer || 'Sorry, I could not get a response.';
-        messages.appendChild(botBubble);
-        botBubble.scrollIntoView({ behavior: 'smooth' });
-
-      } catch (error) {
-        typingIndicator.style.display = 'none';
-        const errorBubble = document.createElement('div');
-        errorBubble.className = 'chat-bubble error';
-        errorBubble.textContent = '❌ Error talking to bot.';
-        messages.appendChild(errorBubble);
-        errorBubble.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-
-    // Clear chat
-    document.getElementById('clear-chat').addEventListener('click', () => {
-      messages.innerHTML = '';
-    });
-  </script>
+<script src="chatbot.js"></script>
 </body>
 </html>
