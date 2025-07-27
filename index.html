@@ -204,7 +204,7 @@ function submitForm(e) {
   const form = document.getElementById("contact-form");
   const status = document.getElementById("form-status");
   const data = new FormData(form);
-  fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbweQ8ppHw5EFqYjC4rXiGFaEup7JYi0y-BYQVWEl_fmjS8P-dNlWYcexjn5Y7kwo9s9/exec", {
     method: "POST",
     body: data
   }).then(res => {
