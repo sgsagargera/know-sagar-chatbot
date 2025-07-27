@@ -1,39 +1,44 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SagarBot</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <title>SagarBot | Know About Sagar</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header class="header">
-    <h1>👨‍💻 Know About Sagar</h1>
-    <div class="theme-toggle">
+  <header class="hero">
+    <div class="hero-content">
+      <h1>🧑‍💼 Ask Me About Sagar</h1>
       <label class="switch">
-        <input type="checkbox" id="themeToggle">
+        <input type="checkbox" id="themeToggle"/>
         <span class="slider round"></span>
       </label>
     </div>
   </header>
 
-  <main class="main-container">
-    <div class="chat-popup">
-      <div class="chat-header">SagarBot</div>
-      <div class="chat-body" id="chat-body"></div>
-      <div class="typing-indicator" id="typing-indicator" style="display: none;">Sagar is typing<span>.</span><span>.</span><span>.</span></div>
-      <div class="chat-input">
-        <input type="text" id="chat-input" placeholder="Ask me about Sagar..." />
+  <main class="chat-container">
+    <div id="chatbox" class="chat-popup">
+      <div class="chat-header">💬 SagarBot</div>
+      <div id="chat-body" class="chat-body">
+        <div class="chat-bubble bot">
+          <div class="avatar" style="background-image: url('20250418_212238.jpg');"></div>
+          <div class="text">Hello! How can I assist you today?</div>
+        </div>
+      </div>
+      <div id="typing-indicator" class="typing-indicator" style="display:none;">SagarBot is typing...</div>
+      <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask me about Sagar..."/>
         <button id="send-btn">Send</button>
       </div>
-      <div class="chat-footer">
+      <div class="chat-controls">
         <button id="export-btn">📁 Export</button>
         <button id="clear-btn">🗑️ Clear</button>
       </div>
     </div>
   </main>
 
-  <script src="chatbot.js"></script>
+  <script src="chatbot.js" defer></script>
 </body>
 </html>
