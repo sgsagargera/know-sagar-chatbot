@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-const OpenAI = require('openai');
+const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,11 +17,6 @@ try {
   console.warn('⚠️ Could not load resume.txt:', error.message);
 }
 
-// ✅ Setup OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
-
 app.use(cors());
 app.use(express.json());
 
@@ -33,7 +28,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ✅ Chat API route
+// ✅ Chat API route using OpenRouter
 app.post('/ask', async (req, res) => {
   const question = req.body.question;
   if (!question) {
@@ -41,33 +36,40 @@ app.post('/ask', async (req, res) => {
   }
 
   try {
-    const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        {
-          role: 'system',
-          content: `You are a chatbot representing Sagar Gera. Use the following resume content to answer questions:\n\n${resumeText}`
-        },
-        { role: 'user', content: question }
-      ]
-    });
+    const response = await axios.post(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        model: 'openrouter/openai/gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: `You are a chatbot representing Sagar Gera. Use the following resume content to answer questions:\n\n${resumeText}`
+          },
+          { role: 'user', content: question }
+        ]
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
 
-    const answer = response.choices[0].message.content;
+    const answer = response.data.choices[0].message.content;
     res.json({ answer });
 
   } catch (error) {
-  if (error.response) {
-    // OpenAI API error with response details
-    console.error('❌ OpenAI API Error:', {
-      status: error.response.status,
-      data: error.response.data,
-    });
-  } else {
-    // General error (network, etc.)
-    console.error('❌ General Error:', error.message || error);
+    if (error.response) {
+      console.error('❌ OpenRouter API Error:', {
+        status: error.response.status,
+        data: error.response.data,
+      });
+    } else {
+      console.error('❌ General Error:', error.message || error);
+    }
+    res.status(500).json({ error: 'Error talking to bot.' });
   }
-  res.status(500).json({ error: 'Error talking to bot.' });
-}
 });
 
 // ✅ Start server
