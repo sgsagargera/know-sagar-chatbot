@@ -37,6 +37,7 @@
 
       <div class="messages" id="messages"></div>
       <div class="typing-indicator" id="typing-indicator" style="display: none;">Sagar is typing<span>.</span><span>.</span><span>.</span></div>
+      <button id="clear-chat" class="clear-btn">🗑️ Clear Chat</button>
     </main>
 
     <footer>
@@ -46,13 +47,18 @@
 
   <script src="chatbot.js"></script>
   <script>
-    // Theme toggle
+    // Theme toggle with persistence
     const toggle = document.getElementById('themeToggle');
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      toggle.checked = true;
+    }
     toggle.addEventListener('change', () => {
       document.body.classList.toggle('dark-mode');
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
     });
 
-    // Typing indicator
+    // Chat logic
     const form = document.getElementById('chat-form');
     const questionInput = document.getElementById('question');
     const messages = document.getElementById('messages');
@@ -63,11 +69,11 @@
       const question = questionInput.value.trim();
       if (!question) return;
 
-      // Display user's message
       const userBubble = document.createElement('div');
       userBubble.className = 'chat-bubble user';
       userBubble.textContent = question;
       messages.appendChild(userBubble);
+      userBubble.scrollIntoView({ behavior: 'smooth' });
 
       questionInput.value = '';
       typingIndicator.style.display = 'block';
@@ -86,6 +92,7 @@
         botBubble.className = 'chat-bubble bot';
         botBubble.textContent = data.answer || 'Sorry, I could not get a response.';
         messages.appendChild(botBubble);
+        botBubble.scrollIntoView({ behavior: 'smooth' });
 
       } catch (error) {
         typingIndicator.style.display = 'none';
@@ -93,7 +100,13 @@
         errorBubble.className = 'chat-bubble error';
         errorBubble.textContent = '❌ Error talking to bot.';
         messages.appendChild(errorBubble);
+        errorBubble.scrollIntoView({ behavior: 'smooth' });
       }
+    });
+
+    // Clear chat
+    document.getElementById('clear-chat').addEventListener('click', () => {
+      messages.innerHTML = '';
     });
   </script>
 </body>
