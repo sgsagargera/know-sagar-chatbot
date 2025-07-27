@@ -9,8 +9,8 @@
 </head>
 <body>
   <div class="theme-toggle">
-    <label class="switch">
-      <input type="checkbox" id="themeToggle">
+    <label class="switch" aria-label="Toggle dark mode">
+      <input type="checkbox" id="themeToggle" />
       <span class="slider"></span>
     </label>
   </div>
@@ -24,30 +24,33 @@
     </header>
 
     <main>
-      <form id="chat-form" autocomplete="off">
+      <form id="chat-form" autocomplete="off" aria-label="Ask Sagar chatbot">
         <input 
           type="text" 
           id="question" 
           placeholder="Ask me anything about Sagar..." 
           required 
-          aria-label="Your question about Sagar"
+          aria-label="Your question"
         />
-        <button type="submit">Send</button>
+        <button type="submit" aria-label="Send question to chatbot">Send</button>
       </form>
 
-      <div class="messages" id="messages"></div>
-      <div class="typing-indicator" id="typing-indicator" style="display: none;">Sagar is typing<span>.</span><span>.</span><span>.</span></div>
-      <button id="clear-chat" class="clear-btn">🗑️ Clear Chat</button>
+      <div class="messages" id="messages" aria-live="polite" role="log"></div>
+      <div class="typing-indicator" id="typing-indicator" style="display: none;" aria-hidden="true">
+        Sagar is typing<span>.</span><span>.</span><span>.</span>
+      </div>
+
+      <button id="clear-chat" class="clear-btn" aria-label="Clear chat history">🗑️ Clear Chat</button>
     </main>
 
     <footer>
-      <p class="footer-text">Built with ❤️ by Sagar Gera</p>
+      <p class="footer-text">Built with ❤️ by <strong>Sagar Gera</strong></p>
     </footer>
   </div>
 
   <script src="chatbot.js"></script>
   <script>
-    // Theme toggle with persistence
+    // Theme toggle with localStorage
     const toggle = document.getElementById('themeToggle');
     if (localStorage.getItem('theme') === 'dark') {
       document.body.classList.add('dark-mode');
@@ -76,7 +79,7 @@
       userBubble.scrollIntoView({ behavior: 'smooth' });
 
       questionInput.value = '';
-      typingIndicator.style.display = 'block';
+      typingIndicator.style.display = 'inline-flex';
 
       try {
         const res = await fetch('/ask', {
