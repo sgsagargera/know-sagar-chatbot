@@ -1,32 +1,43 @@
-const form = document.getElementById('chat-form');
-const input = document.getElementById('user-input');
-const chatBox = document.getElementById('chat-box');
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector("form");
+  const input = document.querySelector("input");
+  const messages = document.querySelector(".messages");
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const userMessage = input.value.trim();
-  if (!userMessage) return;
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const question = input.value.trim();
 
-  appendMessage('user', userMessage);
-  input.value = '';
+    if (!question) return;
 
-  try {
-    const response = await fetch('/ask', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: userMessage }),
-    });
-    const data = await response.json();
-    appendMessage('bot', data.reply || 'No response');
-  } catch (error) {
-    appendMessage('bot', 'Error talking to bot.');
-  }
+    // Show user's question
+    const userDiv = document.createElement("div");
+    userDiv.textContent = question;
+    userDiv.classList.add("user-message");
+    messages.appendChild(userDiv);
+
+    input.value = "";
+
+    // Call backend
+    try {
+      const response = await fetch("/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ question }) // ✅ Correct key
+      });
+
+      const data = await response.json();
+
+      const botDiv = document.createElement("div");
+      botDiv.textContent = data.answer || "No response";
+      botDiv.classList.add("bot-message");
+      messages.appendChild(botDiv);
+    } catch (err) {
+      const errorDiv = document.createElement("div");
+      errorDiv.textContent = "Error talking to bot.";
+      errorDiv.classList.add("bot-message");
+      messages.appendChild(errorDiv);
+    }
+  });
 });
-
-function appendMessage(sender, text) {
-  const message = document.createElement('div');
-  message.classList.add('message', sender);
-  message.textContent = text;
-  chatBox.appendChild(message);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
