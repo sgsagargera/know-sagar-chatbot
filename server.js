@@ -20,3 +20,15 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
 });
+
+app.post('/ask', async (req, res) => {
+  try {
+    const { prompt } = req.body;
+    // dummy test response
+    res.json({ response: `Echo: ${prompt}` });
+  } catch (error) {
+    console.error('Error in /ask:', error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
