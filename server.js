@@ -3,59 +3,77 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
-const axios = require('axios');
+const { Configuration, OpenAIApi } = require('openai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-//const resumeText = fs.readFileSync(path.join(__dirname, 'data', 'resume.txt'), 'utf-8');
-let resumeText = '';
-try {
-  resumeText = fs.readFileSync(path.join(__dirname, 'data', 'resume.txt'), 'utf-8');
-} catch (err) {
-  console.error('Could not load resume.txt:', err.message);
-  resumeText = 'Resume not available.';
-}
-
 app.use(cors());
 app.use(express.json());
-
-// ✅ Serve static files from "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ Serve index.html at root
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// ✅ OpenAI Setup
+const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAIApi(configuration);
 
-// ✅ API endpoint
+// ✅ Read and Chunk Resume
+let resumeChunks = [];
+try {
+  const resumeText = fs.readFileSync(path.join(__dirname, 'data', 'resume.txt'), 'utf-8');
+  const chunkSize = 500;
+  for (let i = 0; i < resumeText.length; i += chunkSize) {
+    resumeChunks.push(resumeText.slice(i, i + chunkSize));
+  }
+} catch (err) {
+  console.error('Could not load resume.txt:', err.message);
+}
+
+// ✅ Get Embedding Helper
+async function getEmbedding(text) {
+  const response = await openai.createEmbedding({
+    model: 'text-embedding-ada-002',
+    input: text,
+  });
+  return response.data.data[0].embedding;
+}
+
+// ✅ Cosine Similarity Helper
+function cosineSimilarity(vecA, vecB) {
+  const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
+  const normA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
+  const normB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
+  return dot / (normA * normB);
+}
+
+// ✅ Endpoint
 app.post('/ask', async (req, res) => {
   const question = req.body.question;
   try {
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
-      {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'system',
-            content: `You are a chatbot for Sagar Gera. Use this resume:\n\n${resumeText}`
-          },
-          { role: 'user', content: question }
-        ]
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
-        }
-      }
+    const questionEmbedding = await getEmbedding(question);
+
+    // Find the most relevant chunk
+    const similarities = await Promise.all(
+      resumeChunks.map(async (chunk) => {
+        const chunkEmbedding = await getEmbedding(chunk);
+        return cosineSimilarity(questionEmbedding, chunkEmbedding);
+      })
     );
+
+    const bestChunkIndex = similarities.indexOf(Math.max(...similarities));
+    const context = resumeChunks[bestChunkIndex];
+
+    const response = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        { role: 'system', content: `You are a resume bot for Sagar Gera. Answer questions based on this resume chunk:\n\n${context}` },
+        { role: 'user', content: question },
+      ],
+    });
 
     const answer = response.data.choices[0].message.content;
     res.json({ answer });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     res.status(500).json({ error: 'Error talking to bot.' });
   }
 });
