@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Know About Sagar</title>
+  <script defer>
+    function respondToQuery() {
+      const input = document.getElementById("userQuery").value.toLowerCase();
+      let response = "";
+
+      if (input.includes("skills") || input.includes("tech stack")) {
+        response = `<h3>Results for: "Skills"</h3><p><strong>⚙️ Tech Stack:</strong> Java, J2EE, Spring MVC, Oracle, SAP Commerce (1811-2211), IntelliJ, Git, Solr, HAC, SmartEdit, Backoffice, Impex, Groovy</p>`;
+      } else if (input.includes("experience") || input.includes("projects")) {
+        response = `<h3>Results for: "Experience"</h3><ul><li><strong>Sony D2C Europe:</strong> Refurbished Sales, Multiwarehouse, Marketplace Integration</li><li><strong>J&J B2B:</strong> Custom cart & checkout</li><li><strong>Sanofi:</strong> Customer & Order Management Services</li></ul>`;
+      } else if (input.includes("certified") || input.includes("certification")) {
+        response = `<h3>Results for: "Certifications"</h3><p>📜 Certified SAP Commerce Cloud Developer (2023)</p>`;
+      } else if (input.includes("why hire") || input.includes("unique") || input.includes("different")) {
+        response = `<h3>Results for: "Why Hire Me"</h3><p>🔥 I squash bugs faster than you say "flexible search." I lead deployments, build scalable ecommerce solutions, and do it all with flair.</p>`;
+      } else if (input.includes("languages")) {
+        response = `<h3>Results for: "Languages"</h3><p>🌐 English, Hindi, Java, and fluent in Hybris.</p>`;
+      } else if (input.includes("education")) {
+        response = `<h3>Results for: "Education"</h3><p>🎓 B.Tech in Computer Science – Guru Gobind Singh Indraprastha University</p>`;
+      } else if (input.includes("location") || input.includes("remote")) {
+        response = `<h3>Results for: "Location"</h3><p>📍 Based in India. Open to remote or onsite (where the Hybris is!).</p>`;
+      } else {
+        response = `<h3>No matching result found</h3><p>🤖 Try asking about: skills, experience, certifications, or projects.</p>`;
+      }
+
+      const botResponse = document.getElementById("botResponse");
+      botResponse.innerHTML = response;
+      botResponse.style.display = "block";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("userQuery").addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          respondToQuery();
+        }
+      });
+    });
+  </script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      margin-top: 60px;
+      font-size: 3rem;
+      color: #333;
+    }
+    .search-box {
+      margin-top: 30px;
+      width: 90%;
+      max-width: 600px;
+      position: relative;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      border-radius: 30px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    button {
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3367d6;
+    }
+    .response-box {
+      margin-top: 30px;
+      max-width: 700px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      display: none;
+      font-size: 1rem;
+      color: #333;
+    }
+    .response-box h3 {
+      color: #202124;
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+    .response-box p, .response-box ul {
+      margin: 0;
+      line-height: 1.6;
+    }
+    .footer {
+      margin-top: 80px;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 Know About Sagar</h1>
+  <div class="search-box">
+    <input type="text" id="userQuery" placeholder="Ask something about Sagar..." />
+    <button onclick="respondToQuery()">Search</button>
+  </div>
+  <div class="response-box" id="botResponse"></div>
+  <div class="footer">Powered by SagarBot</div>
+</body>
+</html>
