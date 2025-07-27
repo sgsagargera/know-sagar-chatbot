@@ -2,20 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Know Sagar 🤖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sagar Gera | Chatbot</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <div class="container">
-    <h1>Know Sagar 🤖</h1>
+  <nav class="navbar">
+    <div class="logo">Sagar Gera</div>
+    <a class="cv-link" href="https://www.linkedin.com/in/sagar-gera-374089100" target="_blank">LinkedIn Profile</a>
+  </nav>
+  <div class="main-container">
     <div class="chatbox" id="chatbox"></div>
     <div class="input-section">
       <input type="text" id="user-input" placeholder="Ask me anything about Sagar..." />
       <button onclick="sendMessage()">Send</button>
     </div>
-    <a class="cv-link" href="https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile" target="_blank">📄 Explore Sagar's Virtual CV</a>
   </div>
-  <script src="chatbot.js"></script>
+  <script>
+    const inputField = document.getElementById("user-input");
+    inputField.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    });
+
+    function sendMessage() {
+      const input = inputField;
+      const message = input.value.trim();
+      if (message === "") return;
+
+      appendMessage("You", message);
+      let reply = getBotResponse(message);
+      setTimeout(() => appendMessage("SagarBot", reply), 500);
+
+      input.value = "";
+    }
+
+    function appendMessage(sender, text) {
+      const chatbox = document.getElementById("chatbox");
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "msg";
+      msgDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      chatbox.appendChild(msgDiv);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function getBotResponse(input) {
+      input = input.toLowerCase();
+      if (input.includes("sagar")) return "Sagar is a software developer with expertise in Java, SQL, and SAP Hybris.";
+      if (input.includes("skills")) return "Sagar is skilled in SQL, Python, Power BI, and data analysis.";
+      if (input.includes("experience")) return "Sagar has 6 years of experience including work at EY as a Data Analyst.";
+      return "I'm still learning about that! Ask me something else about Sagar.";
+    }
+  </script>
 </body>
 </html>
