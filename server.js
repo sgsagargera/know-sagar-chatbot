@@ -13,9 +13,18 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ✅ Catch-all route to send index.html for frontend routes
+const fs = require('fs');
+
+// Catch-all route, but exclude requests for existing files
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  const requestedPath = path.join(__dirname, 'public', req.path);
+  if (fs.existsSync(requestedPath)) {
+    return res.sendFile(requestedPath);
+  } else {
+    return res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  }
 });
+
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
