@@ -3,100 +3,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Know About Sagar</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #121212;
-      color: white;
+      background: linear-gradient(to right, #0f0f0f, #1c1c1c);
+      color: #fff;
       font-family: 'Roboto', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem;
+      padding: 3rem 1rem;
+      min-height: 100vh;
     }
+
     h1 {
       color: #e50914;
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      letter-spacing: 1px;
     }
-    input {
-      width: 50%;
-      padding: 10px;
+
+    #query {
+      padding: 15px;
+      width: 90%;
+      max-width: 500px;
       font-size: 1rem;
-      margin-top: 2rem;
+      border: none;
       border-radius: 8px;
-      border: none;
+      outline: none;
+      margin-bottom: 1rem;
     }
+
     button {
-      margin-top: 1rem;
-      padding: 10px 20px;
-      font-size: 1rem;
-      background-color: #e50914;
-      color: white;
+      background: #e50914;
       border: none;
-      border-radius: 5px;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 1rem;
+      color: #fff;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
+
+    button:hover {
+      background: #b20710;
+    }
+
     #response {
       margin-top: 2rem;
       font-size: 1.2rem;
-      max-width: 60%;
       text-align: center;
+      max-width: 80%;
     }
+
     #redirect {
       display: none;
-      margin-top: 1.5rem;
+      margin-top: 2rem;
     }
+
     #redirect a {
-      color: #e50914;
-      font-weight: bold;
+      background: #e50914;
+      padding: 10px 16px;
+      border-radius: 6px;
+      color: #fff;
       text-decoration: none;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <h1>Know About Sagar</h1>
-  <input id="query" placeholder="Ask me anything..." />
+  <input id="query" placeholder="Ask me anything about Sagar..." onkeypress="handleKeyPress(event)" />
   <button onclick="respond()">Search</button>
   <div id="response"></div>
   <div id="redirect">
-    Want to explore more about Sagar? <a href="cv.html">Click here for Virtual CV</a>
+    <a href="cv.html">✨ View Virtual CV</a>
   </div>
 
   <script>
-    document.getElementById("query").addEventListener("keypress", function (event) {
+    function handleKeyPress(event) {
       if (event.key === "Enter") {
-        event.preventDefault();
         respond();
       }
-    });
+    }
 
     function respond() {
-      const query = document.getElementById('query').value.toLowerCase();
-      const responseBox = document.getElementById('response');
-      const redirectBox = document.getElementById('redirect');
-      let response = '';
+      const q = document.getElementById("query").value.toLowerCase();
+      const res = document.getElementById("response");
+      const redirect = document.getElementById("redirect");
+      let text = "";
 
-      if (query.includes('experience')) {
-        response = "I've worked at IBM (Sony Project) and Cognizant (J&J, Sanofi) as a Hybris Developer since 2019.";
-      } else if (query.includes('project')) {
-        response = "I've led projects like Sony D2C rollout, Refurbished Sales, Multiwarehouse Marketplace, Fraud Management, and Configurable Bundles.";
-      } else if (query.includes('skill')) {
-        response = "Skilled in Java, Spring MVC, SAP Hybris 1811–2211, REST, Oracle, Impex, Groovy, SmartEdit, Backoffice, and Solr.";
-      } else if (query.includes('education')) {
-        response = "I hold a B.Tech in Computer Science from Guru Gobind Singh Indraprastha University.";
-      } else if (query.includes('certification')) {
-        response = "Certified SAP Commerce Cloud Developer, with additional courses in Industry 4.0 and Electronics Insights.";
-      } else if (query.includes('tools') || query.includes('methodology')) {
-        response = "I use IntelliJ, SourceTree, Git, and follow Agile and DevOps practices with deep expertise in performance optimization and backoffice customization.";
-      } else if (query.includes('about') || query.includes('who are you')) {
-        response = "I’m Sagar Gera, a seasoned SAP Commerce/Hybris Developer passionate about building e-commerce platforms that work like magic.";
+      if (q.includes("experience")) {
+        text = "IBM (Sony) & Cognizant (J&J, Sanofi) — 4+ years in SAP Hybris.";
+      } else if (q.includes("project")) {
+        text = "Sony D2C, Refurbished Sales, Fraud Mgmt, Configurable Bundles.";
+      } else if (q.includes("skill")) {
+        text = "SAP Hybris, Java, Spring MVC, Solr, REST, Groovy, Impex, SmartEdit.";
+      } else if (q.includes("education")) {
+        text = "B.Tech in Computer Science from GGSIPU.";
+      } else if (q.includes("certification")) {
+        text = "SAP Commerce Cloud Certified Developer, Industry 4.0, Electronics Jumpstart.";
+      } else if (q.includes("tools") || q.includes("methodologies")) {
+        text = "IntelliJ, Git, SourceTree, Agile, DevOps, Backoffice Customization.";
+      } else if (q.includes("who") || q.includes("about")) {
+        text = "I’m Sagar Gera – eCommerce wizard with Hybris power and Java sauce 💻✨.";
       } else {
-        response = "That’s a great question! You’ll find the answer in my virtual CV. Click below to explore.";
+        text = "Hmm, that’s interesting! Maybe check out the Virtual CV below 👇";
       }
 
-      responseBox.textContent = response;
-      redirectBox.style.display = 'block';
+      res.textContent = text;
+      redirect.style.display = "block";
     }
   </script>
 </body>
