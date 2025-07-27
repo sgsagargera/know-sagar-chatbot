@@ -9,14 +9,14 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static files
+// ✅ Serve static frontend files from the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Fallback for SPA routing – serve index.html
+// ✅ Catch-all route to send index.html for frontend routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`✅ Server is running on http://localhost:${PORT}`);
 });
