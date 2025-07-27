@@ -2,6 +2,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="icon" href="https://fav.farm/⭐" />
+  <meta name="description" content="Smart Chatbot powered by Sagar Gera's resume" />
+  <meta property="og:title" content="Sagar Gera – Interactive Chatbot" />
+  <meta property="og:description" content="Explore my skills, projects, and experience in a witty and professional format." />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/9910399280" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Know About Sagar</title>
@@ -80,7 +86,9 @@
   </style>
 </head>
 <body>
-  <h1>Know About Sagar</h1>
+  <button id="themeToggle">🌓 Toggle Theme</button>
+  
+  <h1 class="typing">Know About Sagar</h1>
   <input type="text" id="query" placeholder="Ask me anything..." />
   <button onclick="getAnswer()">Ask</button>
 
@@ -122,6 +130,13 @@
       if (e.key === "Enter") {
         getAnswer();
       }
+    });
+  </script>
+
+  <script>
+    const toggleBtn = document.getElementById('themeToggle');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
     });
   </script>
 </body>

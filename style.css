@@ -61,3 +61,87 @@ button:hover {
 #redirect a:hover {
   background: #ddd;
 }
+
+
+/* Dark Mode */
+body.dark {
+  background: linear-gradient(to right, #000000, #434343);
+  color: #fff;
+}
+body.dark #query {
+  background: #222;
+  color: #eee;
+}
+.typing {
+  border-right: 2px solid #e50914;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 3s steps(30, end), blink .75s step-end infinite;
+}
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+@keyframes blink {
+  from, to { border-color: transparent }
+  50% { border-color: #e50914; }
+}
+.dot {
+  animation: blink 1.4s infinite;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+
+/* Enhance theme */
+body {
+  background: linear-gradient(to right, #1c1c1c, #3c3c3c);
+  color: #f1f1f1;
+}
+
+/* Chat bubble styling */
+#response {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  margin: auto;
+  width: 80%;
+  box-shadow: 0 0 8px rgba(229, 9, 20, 0.6);
+  transition: all 0.4s ease-in-out;
+}
+
+/* Loading animation */
+.dot {
+  display: inline-block;
+  animation: blink 1.4s infinite;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #ff6161;
+}
+
+/* Collapsible Q&A behavior */
+.collapsible {
+  background-color: #e50914;
+  color: white;
+  cursor: pointer;
+  padding: 14px 20px;
+  width: 80%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 1rem;
+  margin: auto;
+  margin-top: 20px;
+  border-radius: 6px;
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  width: 80%;
+  margin: auto;
+  transition: max-height 0.2s ease-out;
+  background-color: #333;
+  border-radius: 0 0 6px 6px;
+}

@@ -32,7 +32,25 @@ document.addEventListener("DOMContentLoaded", () => {
     responseBox.innerHTML = "<em>Typing...</em>";
     setTimeout(() => {
       const answer = getSmartAnswer(query);
-      responseBox.innerText = answer;
+      
+      responseBox.innerHTML = '';
+      const btn = document.createElement('button');
+      btn.className = 'collapsible';
+      btn.textContent = 'Click to Expand Answer';
+      const content = document.createElement('div');
+      content.className = 'content';
+      content.innerHTML = `<p>${answer}</p>`;
+      btn.onclick = () => {
+        btn.classList.toggle('active');
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+        }
+      };
+      responseBox.appendChild(btn);
+      responseBox.appendChild(content);
+  
       redirectBox.style.display = "block";
     }, 700);
   }
