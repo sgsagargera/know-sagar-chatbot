@@ -1,132 +1,188 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f3f2ef;
+  background: #f9f9f9;
+  color: #222;
+  transition: background 0.3s, color 0.3s;
 }
 
-/* Chat Popup Button */
-.chat-launch-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background-color: #0a66c2;
-  color: white;
-  padding: 16px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  z-index: 1000;
+.dark-mode {
+  background: #121212;
+  color: #eee;
 }
 
-/* Popup Panel */
-.chat-popup {
-  position: fixed;
-  bottom: 100px;
-  right: 24px;
-  width: 320px;
-  max-height: 500px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 999;
-}
-
-/* Header */
-.chat-header {
-  background-color: #0a66c2;
-  color: white;
-  padding: 12px 16px;
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-/* Close */
-.close-btn {
-  background: none;
+  padding: 20px;
+  background: #0073b1;
   color: white;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
 }
 
-/* Body */
+.theme-toggle {
+  margin-right: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.chat-popup {
+  width: 350px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dark-mode .chat-popup {
+  background: #1f1f1f;
+  color: white;
+}
+
+.chat-header {
+  background: #0073b1;
+  color: white;
+  padding: 16px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
 .chat-body {
-  flex: 1;
-  padding: 12px;
+  height: 300px;
+  padding: 16px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* Input */
-form {
-  display: flex;
-  border-top: 1px solid #ccc;
-}
-
-form input {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  font-size: 14px;
-}
-
-form button {
-  background-color: #0a66c2;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  cursor: pointer;
-}
-
-/* Chat Bubble */
 .chat-bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 90%;
+}
+
+.chat-bubble.user {
+  justify-content: flex-end;
+  align-self: flex-end;
+}
+
+.chat-bubble.bot {
+  justify-content: flex-start;
+}
+
+.chat-bubble .avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-size: cover;
+}
+
+.chat-bubble .text {
+  background: #0073b1;
+  color: white;
   padding: 10px 14px;
   border-radius: 18px;
-  max-width: 80%;
-  word-wrap: break-word;
+  line-height: 1.4;
+  max-width: 240px;
 }
 
-.user {
-  align-self: flex-end;
-  background-color: #e1f5fe;
+.chat-bubble.user .text {
+  background: #0a66c2;
+  color: white;
 }
 
-.bot {
-  align-self: flex-start;
-  background-color: #ebebeb;
+.dark-mode .chat-bubble .text {
+  background: #333;
 }
 
-/* Typing */
-.typing-indicator {
-  font-size: 12px;
-  color: #555;
-  margin: 0 12px 10px;
-  text-align: left;
+.chat-input {
+  display: flex;
+  border-top: 1px solid #eee;
+  padding: 10px;
 }
 
-/* Footer */
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.chat-input button {
+  margin-left: 10px;
+  padding: 10px 16px;
+  border: none;
+  background: #0073b1;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 .chat-footer {
-  padding: 8px 12px;
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid #ccc;
-  background-color: #fafafa;
+  padding: 10px;
+  border-top: 1px solid #eee;
 }
 
-.chat-footer button {
-  font-size: 14px;
-  border: none;
-  background: none;
-  cursor: pointer;
+.typing-indicator {
+  font-style: italic;
+  font-size: 13px;
+  margin: 0 auto;
+  padding: 4px;
+  opacity: 0.6;
 }
