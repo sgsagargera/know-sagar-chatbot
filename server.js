@@ -3,6 +3,9 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
+
+console.log("ENV CHECK:", process.env);
+
 const OpenAI = require('openai');
 
 const app = express();
