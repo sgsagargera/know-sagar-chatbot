@@ -1,69 +1,85 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const openBtn = document.getElementById("chat-button");
-  const closeBtn = document.getElementById("close-popup");
-  const popup = document.getElementById("chat-popup");
-  const form = document.getElementById("chat-form");
-  const messages = document.getElementById("messages");
-  const questionInput = document.getElementById("question");
-  const typing = document.getElementById("typing-indicator");
-  const clearBtn = document.getElementById("clear-chat");
-  const exportBtn = document.getElementById("export-chat");
+document.addEventListener('DOMContentLoaded', () => {
+  const themeToggle = document.getElementById('themeToggle');
+  const chatBody = document.getElementById('chat-body');
+  const sendBtn = document.getElementById('send-btn');
+  const input = document.getElementById('chat-input');
+  const typing = document.getElementById('typing-indicator');
+  const exportBtn = document.getElementById('export-btn');
+  const clearBtn = document.getElementById('clear-btn');
 
-  openBtn.addEventListener("click", () => popup.style.display = "flex");
-  closeBtn.addEventListener("click", () => popup.style.display = "none");
+  // Dark mode
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    themeToggle.checked = true;
+  }
 
-  const delayTyping = (text, container) => {
-    typing.style.display = "block";
-    setTimeout(() => {
-      typing.style.display = "none";
-      const botMsg = document.createElement("div");
-      botMsg.className = "chat-bubble bot";
-      botMsg.textContent = text;
-      container.appendChild(botMsg);
-      botMsg.scrollIntoView({ behavior: "smooth" });
-    }, 1200);
-  };
+  themeToggle.addEventListener('change', () => {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+  });
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const question = questionInput.value.trim();
+  // Chat
+  function appendMessage(role, text) {
+    const bubble = document.createElement('div');
+    bubble.classList.add('chat-bubble', role);
+
+    const avatar = document.createElement('div');
+    avatar.classList.add('avatar');
+    avatar.style.backgroundImage = role === 'user'
+      ? 'url(https://cdn-icons-png.flaticon.com/512/149/149071.png)' // user avatar
+      : 'url(https://cdn-icons-png.flaticon.com/512/4712/4712106.png)'; // bot avatar
+
+    const message = document.createElement('div');
+    message.classList.add('text');
+    message.textContent = text;
+
+    bubble.appendChild(role === 'user' ? message : avatar);
+    bubble.appendChild(role === 'user' ? avatar : message);
+
+    chatBody.appendChild(bubble);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  sendBtn.addEventListener('click', async () => {
+    const question = input.value.trim();
     if (!question) return;
 
-    const userMsg = document.createElement("div");
-    userMsg.className = "chat-bubble user";
-    userMsg.textContent = question;
-    messages.appendChild(userMsg);
-    userMsg.scrollIntoView({ behavior: "smooth" });
-
-    questionInput.value = "";
+    appendMessage('user', question);
+    input.value = '';
+    typing.style.display = 'block';
 
     try {
-      const res = await fetch("/ask", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question }),
+      const res = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
       });
 
       const data = await res.json();
-      delayTyping(data.answer || "Sorry, I couldn’t understand that.", messages);
-    } catch (err) {
-      delayTyping("❌ Error talking to bot.", messages);
+
+      setTimeout(() => {
+        typing.style.display = 'none';
+        appendMessage('bot', data.answer || 'Sorry, I could not get a response.');
+      }, 800); // Typing delay
+    } catch (e) {
+      typing.style.display = 'none';
+      appendMessage('bot', '❌ Error talking to bot.');
     }
   });
 
-  clearBtn.addEventListener("click", () => {
-    messages.innerHTML = "";
+  // Export
+  exportBtn.addEventListener('click', () => {
+    const messages = [...chatBody.querySelectorAll('.text')].map((el) => el.textContent);
+    const blob = new Blob([messages.join('\n')], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'chat-log.txt';
+    anchor.click();
   });
 
-  exportBtn.addEventListener("click", () => {
-    const logs = Array.from(messages.querySelectorAll(".chat-bubble"))
-      .map(el => (el.classList.contains("user") ? "You: " : "SagarBot: ") + el.textContent)
-      .join("\n");
-    
-    const blob = new Blob([logs], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "sagar-chat-history.txt";
-    a.click();
+  // Clear
+  clearBtn.addEventListener('click', () => {
+    chatBody.innerHTML = '';
   });
 });
