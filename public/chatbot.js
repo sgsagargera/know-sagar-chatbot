@@ -2,27 +2,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatInput = document.getElementById("chat-input");
   const chatBody = document.getElementById("chat-body");
   const typingIndicator = document.getElementById("typing-indicator");
-  const themeToggle = document.getElementById("theme-toggle");
-  const sendBtn = document.getElementById("send-btn");
+  const themeToggle = document.getElementById("themeToggle");
+  const sendButton = document.getElementById("send-btn");
   const clearBtn = document.getElementById("clear-btn");
   const exportBtn = document.getElementById("export-btn");
+  const expandToggle = document.getElementById("expand-btn");
 
-  // Avatars
-  const botAvatar = "20250418_212238.jpg"; // Replace with actual image location if different
+  const botAvatar = "20250418_212238.jpg"; // Uploaded image
   const userAvatar = "https://www.svgrepo.com/show/384674/user-chat.svg";
 
-  // Load saved theme
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-mode");
+  // 🌓 Theme Toggle
+  if (themeToggle && localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
     themeToggle.checked = true;
   }
 
-  themeToggle.addEventListener("change", () => {
-    document.body.classList.toggle("dark-mode");
-    localStorage.setItem(
-      "theme",
-      document.body.classList.contains("dark-mode") ? "dark" : "light"
-    );
+  themeToggle?.addEventListener('change', () => {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+  });
+
+  // 🔄 Expand Chat
+  expandToggle?.addEventListener('click', () => {
+    document.querySelector(".chat-container").classList.toggle("expanded");
   });
 
   const appendMessage = (text, sender = "bot") => {
@@ -40,8 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     bubble.appendChild(avatar);
     bubble.appendChild(message);
     chatBody.appendChild(bubble);
-
-    bubble.classList.add("fade-in");
     bubble.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -54,20 +54,17 @@ document.addEventListener("DOMContentLoaded", () => {
     typingIndicator.style.display = "block";
 
     try {
-      const response = await fetch("/ask", {
+      const res = await fetch("/ask", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ question }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question })
       });
 
-      const data = await response.json();
+      const data = await res.json();
+      typingIndicator.style.display = "none";
 
-      setTimeout(() => {
-        typingIndicator.style.display = "none";
-        appendMessage(data.answer || "Sorry, I couldn't fetch a response.", "bot");
-      }, 600); // Simulated delay
+      await new Promise(resolve => setTimeout(resolve, 500)); // Typing simulation
+      appendMessage(data.answer || "Sorry, I couldn't fetch a response.", "bot");
 
     } catch (err) {
       typingIndicator.style.display = "none";
@@ -75,23 +72,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  sendBtn.addEventListener("click", sendMessage);
-  chatInput.addEventListener("keypress", (e) => {
+  sendButton?.addEventListener("click", e => {
+    e.preventDefault();
+    sendMessage();
+  });
+
+  chatInput?.addEventListener("keypress", e => {
     if (e.key === "Enter") {
       e.preventDefault();
       sendMessage();
     }
   });
 
-  clearBtn.addEventListener("click", () => {
+  clearBtn?.addEventListener("click", () => {
     chatBody.innerHTML = "";
   });
 
-  exportBtn.addEventListener("click", () => {
+  exportBtn?.addEventListener("click", () => {
     const logs = [...chatBody.querySelectorAll(".chat-bubble")]
-      .map((el) => el.querySelector(".text")?.textContent || "")
+      .map(el => el.querySelector(".text")?.textContent || "")
       .join("\n\n");
-
     const blob = new Blob([logs], { type: "text/plain" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
