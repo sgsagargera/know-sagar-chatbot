@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Know About Sagar</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -56,6 +57,7 @@
       font-size: 1.2rem;
       text-align: center;
       max-width: 80%;
+      min-height: 100px;
     }
 
     #redirect {
@@ -71,51 +73,56 @@
       text-decoration: none;
       font-weight: bold;
     }
+
+    #redirect a:hover {
+      background: #b20710;
+    }
   </style>
 </head>
 <body>
   <h1>Know About Sagar</h1>
-  <input id="query" placeholder="Ask me anything about Sagar..." onkeypress="handleKeyPress(event)" />
-  <button onclick="respond()">Search</button>
+  <input type="text" id="query" placeholder="Ask me anything..." />
+  <button onclick="getAnswer()">Ask</button>
+
   <div id="response"></div>
+
   <div id="redirect">
-    <a href="cv.html">✨ View Virtual CV</a>
+    <a href="cv.html" target="_blank">✨ View Full CV</a>
   </div>
 
   <script>
-    function handleKeyPress(event) {
-      if (event.key === "Enter") {
-        respond();
+    const queryInput = document.getElementById("query");
+    const responseBox = document.getElementById("response");
+    const redirectBox = document.getElementById("redirect");
+
+    const answers = {
+      "name": "Sagar Gera – The Hybris Whisperer & Java Sorcerer 🧙‍♂️",
+      "experience": "Over 4 years in SAP Commerce Cloud (Hybris), solving complex e-commerce puzzles.",
+      "skills": "Java, Spring MVC, REST, Hybris (1811–2211), Oracle, Solr, Backoffice Magic ✨",
+      "education": "B.Tech in Computer Science from GGSIPU 🎓",
+      "certifications": "SAP Commerce Cloud Developer, Industry 4.0, Electronics Insights",
+      "projects": "Sony D2C Europe Rollout, Marketplace Integration, Fraud Mgmt Automation",
+      "tools": "Git, IntelliJ, SourceTree, DevOps tools... and coffee ☕"
+    };
+
+    function getAnswer() {
+      const input = queryInput.value.trim().toLowerCase();
+      let result = "Hmm... I'm still learning. Try asking about 'experience', 'skills', or 'projects'.";
+      for (const key in answers) {
+        if (input.includes(key)) {
+          result = answers[key];
+          break;
+        }
       }
+      responseBox.innerText = result;
+      redirectBox.style.display = "block";
     }
 
-    function respond() {
-      const q = document.getElementById("query").value.toLowerCase();
-      const res = document.getElementById("response");
-      const redirect = document.getElementById("redirect");
-      let text = "";
-
-      if (q.includes("experience")) {
-        text = "IBM (Sony) & Cognizant (J&J, Sanofi) — 4+ years in SAP Hybris.";
-      } else if (q.includes("project")) {
-        text = "Sony D2C, Refurbished Sales, Fraud Mgmt, Configurable Bundles.";
-      } else if (q.includes("skill")) {
-        text = "SAP Hybris, Java, Spring MVC, Solr, REST, Groovy, Impex, SmartEdit.";
-      } else if (q.includes("education")) {
-        text = "B.Tech in Computer Science from GGSIPU.";
-      } else if (q.includes("certification")) {
-        text = "SAP Commerce Cloud Certified Developer, Industry 4.0, Electronics Jumpstart.";
-      } else if (q.includes("tools") || q.includes("methodologies")) {
-        text = "IntelliJ, Git, SourceTree, Agile, DevOps, Backoffice Customization.";
-      } else if (q.includes("who") || q.includes("about")) {
-        text = "I’m Sagar Gera – eCommerce wizard with Hybris power and Java sauce 💻✨.";
-      } else {
-        text = "Hmm, that’s interesting! Maybe check out the Virtual CV below 👇";
+    queryInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        getAnswer();
       }
-
-      res.textContent = text;
-      redirect.style.display = "block";
-    }
+    });
   </script>
 </body>
 </html>
