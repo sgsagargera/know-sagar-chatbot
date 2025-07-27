@@ -1,29 +1,32 @@
-function sendMessage() {
-  const input = document.getElementById("user-input");
-  const message = input.value.trim();
-  if (message === "") return;
+const form = document.getElementById('chat-form');
+const input = document.getElementById('user-input');
+const chatBox = document.getElementById('chat-box');
 
-  appendMessage("You", message);
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const userMessage = input.value.trim();
+  if (!userMessage) return;
 
-  // Replace this with your own logic (mock response)
-  let reply = getBotResponse(message);
-  setTimeout(() => appendMessage("SagarBot", reply), 500);
+  appendMessage('user', userMessage);
+  input.value = '';
 
-  input.value = "";
-}
+  try {
+    const response = await fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userMessage }),
+    });
+    const data = await response.json();
+    appendMessage('bot', data.reply || 'No response');
+  } catch (error) {
+    appendMessage('bot', 'Error talking to bot.');
+  }
+});
 
 function appendMessage(sender, text) {
-  const chatbox = document.getElementById("chatbox");
-  const msgDiv = document.createElement("div");
-  msgDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
-  chatbox.appendChild(msgDiv);
-  chatbox.scrollTop = chatbox.scrollHeight;
-}
-
-function getBotResponse(input) {
-  input = input.toLowerCase();
-  if (input.includes("sagar")) return "Sagar is a software developer with expertise in Java, SQL, and SAP Hybris.";
-  if (input.includes("skills")) return "Sagar is skilled in SQL, Python, Power BI, and data analysis.";
-  if (input.includes("experience")) return "Sagar has 6 years of experience including work at EY as a Data Analyst.";
-  return "I'm still learning about that! Ask me something else about Sagar.";
+  const message = document.createElement('div');
+  message.classList.add('message', sender);
+  message.textContent = text;
+  chatBox.appendChild(message);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
