@@ -1,8 +1,25 @@
-
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("chat-form");
   const questionInput = document.getElementById("question");
-  const messagesContainer = document.querySelector(".messages");
+  const messages = document.getElementById("messages");
+  const typingIndicator = document.getElementById("typing-indicator");
+  const themeToggle = document.getElementById("themeToggle");
+
+  // Restore theme from localStorage
+  if (localStorage.getItem("darkMode") === "enabled") {
+    document.body.classList.add("dark-mode");
+    themeToggle.checked = true;
+  }
+
+  // Toggle dark mode
+  themeToggle.addEventListener("change", () => {
+    document.body.classList.toggle("dark-mode");
+    if (document.body.classList.contains("dark-mode")) {
+      localStorage.setItem("darkMode", "enabled");
+    } else {
+      localStorage.removeItem("darkMode");
+    }
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -10,32 +27,47 @@ document.addEventListener("DOMContentLoaded", function () {
     const question = questionInput.value.trim();
     if (!question) return;
 
-    const userMsg = document.createElement("div");
-    userMsg.className = "message user";
-    userMsg.textContent = question;
-    messagesContainer.appendChild(userMsg);
+    // User chat bubble
+    const userBubble = document.createElement("div");
+    userBubble.className = "chat-bubble user";
+    userBubble.textContent = question;
+    messages.appendChild(userBubble);
 
+    scrollToBottom();
     questionInput.value = "";
 
+    // Show typing indicator
+    typingIndicator.style.display = "block";
+
     try {
-      const response = await fetch("/ask", {
+      const res = await fetch("/ask", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question })
       });
 
-      const data = await response.json();
-      const botMsg = document.createElement("div");
-      botMsg.className = "message bot";
-      botMsg.textContent = data.answer || data.error || "No response from bot.";
-      messagesContainer.appendChild(botMsg);
+      const data = await res.json();
+      typingIndicator.style.display = "none";
+
+      const botBubble = document.createElement("div");
+      botBubble.className = "chat-bubble bot";
+      botBubble.textContent = data.answer || data.error || "No response from bot.";
+      messages.appendChild(botBubble);
+
+      scrollToBottom();
     } catch (error) {
-      const errorMsg = document.createElement("div");
-      errorMsg.className = "message bot";
-      errorMsg.textContent = "Error talking to bot.";
-      messagesContainer.appendChild(errorMsg);
+      typingIndicator.style.display = "none";
+
+      const errorBubble = document.createElement("div");
+      errorBubble.className = "chat-bubble error";
+      errorBubble.textContent = "❌ Error talking to bot.";
+      messages.appendChild(errorBubble);
+
+      scrollToBottom();
     }
   });
+
+  function scrollToBottom() {
+    messages.scrollTop = messages.scrollHeight;
+  }
 });
