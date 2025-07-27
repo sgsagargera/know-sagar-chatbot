@@ -3,36 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SagarBot</title>
+  <title>SagarBot | Know About Sagar</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="header">
-    <h1>👨‍💼 Ask Me About Sagar</h1>
+  <header class="hero">
+    <div class="hero-content">
+      <h1>👨‍💼 Ask Me About Sagar</h1>
+    </div>
     <div class="theme-toggle">
       <label class="switch">
         <input type="checkbox" id="themeToggle">
-        <span class="slider round"></span>
+        <span class="slider"></span>
       </label>
     </div>
   </header>
 
-  <main class="main-container">
-    <div class="chat-popup">
-      <div class="chat-header">💬 SagarBot</div>
-      <div class="chat-body" id="chat-body"></div>
-      <div class="typing-indicator" id="typing-indicator" style="display: none;">Sagar is typing<span>.</span><span>.</span><span>.</span></div>
-      <div class="chat-input">
-        <input type="text" id="chat-input" placeholder="Ask me about Sagar..." />
-        <button id="send-btn">Send</button>
-      </div>
-      <div class="chat-footer">
-        <button id="export-btn">📁 Export</button>
-        <button id="clear-btn">🗑️ Clear</button>
+  <div class="chat-popup" id="chatPopup">
+    <div class="chat-header">💬 SagarBot</div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot">
+        <img src="20250418_212238.jpg" class="avatar" alt="Sagar" />
+        <div class="bubble">Hello! How can I assist you today?</div>
       </div>
     </div>
-  </main>
+    <form id="chat-form">
+      <input type="text" id="userInput" placeholder="Ask me about Sagar..." required />
+      <button type="submit">Send</button>
+    </form>
+    <div class="chat-options">
+      <button id="exportLog">📁 Export</button>
+      <button id="clearChat">🗑️ Clear</button>
+    </div>
+  </div>
 
   <script src="chatbot.js"></script>
 </body>
