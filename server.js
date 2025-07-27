@@ -3,81 +3,64 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
-const { Configuration, OpenAIApi } = require('openai');
+const OpenAI = require('openai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ✅ Fallback in case resume.txt is missing
+let resumeText = 'Resume content not available.';
+try {
+  resumeText = fs.readFileSync(path.join(__dirname, 'data', 'resume.txt'), 'utf-8');
+} catch (error) {
+  console.warn('⚠️ Could not load resume.txt:', error.message);
+}
+
+// ✅ Setup OpenAI
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
 app.use(cors());
 app.use(express.json());
+
+// ✅ Serve static frontend files from "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ OpenAI Setup
-const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
-const openai = new OpenAIApi(configuration);
+// ✅ Home route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
-// ✅ Read and Chunk Resume
-let resumeChunks = [];
-try {
-  const resumeText = fs.readFileSync(path.join(__dirname, 'data', 'resume.txt'), 'utf-8');
-  const chunkSize = 500;
-  for (let i = 0; i < resumeText.length; i += chunkSize) {
-    resumeChunks.push(resumeText.slice(i, i + chunkSize));
-  }
-} catch (err) {
-  console.error('Could not load resume.txt:', err.message);
-}
-
-// ✅ Get Embedding Helper
-async function getEmbedding(text) {
-  const response = await openai.createEmbedding({
-    model: 'text-embedding-ada-002',
-    input: text,
-  });
-  return response.data.data[0].embedding;
-}
-
-// ✅ Cosine Similarity Helper
-function cosineSimilarity(vecA, vecB) {
-  const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
-  const normA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
-  const normB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
-  return dot / (normA * normB);
-}
-
-// ✅ Endpoint
+// ✅ Chat API route
 app.post('/ask', async (req, res) => {
   const question = req.body.question;
+  if (!question) {
+    return res.status(400).json({ error: 'Question is required' });
+  }
+
   try {
-    const questionEmbedding = await getEmbedding(question);
-
-    // Find the most relevant chunk
-    const similarities = await Promise.all(
-      resumeChunks.map(async (chunk) => {
-        const chunkEmbedding = await getEmbedding(chunk);
-        return cosineSimilarity(questionEmbedding, chunkEmbedding);
-      })
-    );
-
-    const bestChunkIndex = similarities.indexOf(Math.max(...similarities));
-    const context = resumeChunks[bestChunkIndex];
-
-    const response = await openai.createChatCompletion({
+    const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
-        { role: 'system', content: `You are a resume bot for Sagar Gera. Answer questions based on this resume chunk:\n\n${context}` },
-        { role: 'user', content: question },
-      ],
+        {
+          role: 'system',
+          content: `You are a chatbot representing Sagar Gera. Use the following resume content to answer questions:\n\n${resumeText}`
+        },
+        { role: 'user', content: question }
+      ]
     });
 
-    const answer = response.data.choices[0].message.content;
+    const answer = response.choices[0].message.content;
     res.json({ answer });
+
   } catch (error) {
-    console.error(error.message);
+    console.error('❌ OpenAI Error:', error.message);
     res.status(500).json({ error: 'Error talking to bot.' });
   }
 });
 
+// ✅ Start server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`✅ Server is running on http://localhost:${PORT}`);
 });
