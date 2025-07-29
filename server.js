@@ -1,3 +1,4 @@
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -40,7 +41,7 @@ app.post("/chat", async (req, res) => {
   }
 });
 
-// Fallback route
+// Fallback route for SPA
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
