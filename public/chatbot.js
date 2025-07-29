@@ -69,10 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     createMessage(message, "user");
     chatInput.value = "";
-    
-    typingIndicator.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
-    typingIndicator.style.display = "flex";
-    
+    typingIndicator.style.display = "block";
     suggestionBox.style.display = "none";
 
     try {
@@ -82,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ message }),
       });
 
-      typingIndicator.style.display = "none"; typingIndicator.innerHTML = "";
+      typingIndicator.style.display = "none";
 
       if (response.ok) {
         const data = await response.json();
@@ -99,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         createMessage(fallback, "bot");
       }
     } catch (error) {
-      typingIndicator.style.display = "none"; typingIndicator.innerHTML = "";
+      typingIndicator.style.display = "none";
       const fallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
       createMessage(fallback, "bot");
       console.error("Chat API error:", error);
