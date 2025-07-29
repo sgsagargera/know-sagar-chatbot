@@ -1,18 +1,18 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const fetch = require("node-fetch");
 
 const app = express();
 app.use(bodyParser.json());
 const PORT = process.env.PORT || 3000;
 
 app.post("/chat", async (req, res) => {
-  console.log("📩 Incoming /chat request:", req.body);
+  console.log("📩 Incoming request:", req.body);
 
   try {
     const { message } = req.body;
 
+    // Use built-in fetch for OpenRouter API call
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -25,13 +25,11 @@ app.post("/chat", async (req, res) => {
       })
     });
 
-    console.log("📤 OpenRouter API status:", response.status);
-
+    console.log("📤 OpenRouter API Status:", response.status);
     const data = await response.json();
-    console.log("✅ OpenRouter API response:", data);
+    console.log("✅ OpenRouter API Response:", data);
 
     const reply = data.choices?.[0]?.message?.content || "I couldn't find an answer.";
-
     res.json({ reply });
   } catch (error) {
     console.error("❌ Error in /chat:", error);
