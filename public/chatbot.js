@@ -1,28 +1,28 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const chatInput = document.getElementById("chat-input");
   const chatBody = document.getElementById("chat-body");
   const typingIndicator = document.getElementById("typing-indicator");
-
-  const themeToggle = document.getElementById("themeToggle");
-  if (themeToggle && localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark-mode');
-    themeToggle.checked = true;
-  }
-
-  if (themeToggle) {
-    themeToggle.addEventListener('change', () => {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    });
-  }
-
   const sendButton = document.getElementById("send-btn");
   const clearBtn = document.getElementById("clear-btn");
   const exportBtn = document.getElementById("export-btn");
+  const themeToggle = document.getElementById("themeToggle");
 
   const botAvatar = "20250418_212238.jpg";
   const userAvatar = "https://www.svgrepo.com/show/384674/user-chat.svg";
+
+  // Theme handling
+  const applyTheme = (theme) => {
+    document.body.classList.toggle('dark-mode', theme === 'dark');
+    themeToggle.classList.toggle('glow', theme === 'light');
+    localStorage.setItem('theme', theme);
+  };
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  applyTheme(savedTheme);
+
+  themeToggle.addEventListener('click', () => {
+    const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+    applyTheme(newTheme);
+  });
 
   const appendMessage = (text, sender = "bot") => {
     const bubble = document.createElement("div");
@@ -60,26 +60,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
       typingIndicator.style.display = "none";
 
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 600));
       appendMessage(data.answer || "Sorry, I couldn't fetch a response.", "bot");
-
-    } catch {
+    } catch (err) {
       typingIndicator.style.display = "none";
       appendMessage("❌ Error talking to bot.", "bot");
     }
   };
 
-  sendButton?.addEventListener("click", sendMessage);
-  chatInput?.addEventListener("keypress", e => {
+  sendButton.addEventListener("click", sendMessage);
+  chatInput.addEventListener("keypress", e => {
     if (e.key === "Enter") {
       e.preventDefault();
       sendMessage();
     }
   });
 
-  clearBtn?.addEventListener("click", () => chatBody.innerHTML = "");
+  clearBtn.addEventListener("click", () => chatBody.innerHTML = "");
 
-  exportBtn?.addEventListener("click", () => {
+  exportBtn.addEventListener("click", () => {
     const logs = [...chatBody.querySelectorAll(".chat-bubble")]
       .map(el => el.querySelector(".text")?.textContent || "")
       .join("\n\n");
