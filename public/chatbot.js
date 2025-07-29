@@ -57,19 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
     typingIndicator.style.display = "block";
 
     try {
-      let response = await fetch("/chat", {
+      const response = await fetch("/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
       });
-
-      if (!response.ok) {
-        response = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message }),
-        });
-      }
 
       typingIndicator.style.display = "none";
 
@@ -147,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const rect = chatInput.getBoundingClientRect();
     suggestionBox.style.left = rect.left + "px";
-    suggestionBox.style.top = rect.top - 150 + "px"; // show above input
+    suggestionBox.style.top = rect.top - 150 + "px"; 
     suggestionBox.style.width = rect.width + "px";
     suggestionBox.style.display = "block";
   });
