@@ -15,6 +15,21 @@ document.addEventListener("DOMContentLoaded", () => {
     "👨‍💻 I specialize in answering questions about Sagar’s work and expertise. Try asking something related!"
   ];
 
+  const suggestions = [
+    "Tell me about Sagar's skills",
+    "Show Sagar's work experience",
+    "What technologies does Sagar know?",
+    "Give me Sagar's LinkedIn",
+    "What are Sagar's achievements?",
+    "Does Sagar know SAP Hybris?",
+    "Tell me about Sagar's career",
+    "What are Sagar's data analytics skills?"
+  ];
+
+  const suggestionBox = document.createElement("div");
+  suggestionBox.className = "suggestion-box";
+  document.body.appendChild(suggestionBox);
+
   function updateBulbIcon() {
     themeToggle.textContent = document.body.classList.contains("dark-mode") ? "💤" : "💡";
   }
@@ -39,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addMessage(message, "user");
     chatInput.value = "";
     typingIndicator.style.display = "block";
+    suggestionBox.style.display = "none";
 
     try {
       const response = await fetch("/chat", {
@@ -93,5 +109,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   clearBtn.addEventListener("click", () => {
     chatBody.innerHTML = "";
+  });
+
+  chatInput.addEventListener("input", () => {
+    const query = chatInput.value.toLowerCase();
+    suggestionBox.innerHTML = "";
+    if (query.length === 0) {
+      suggestionBox.style.display = "none";
+      return;
+    }
+
+    const matches = suggestions.filter(s => s.toLowerCase().includes(query));
+    if (matches.length === 0) {
+      suggestionBox.style.display = "none";
+      return;
+    }
+
+    matches.forEach(suggestion => {
+      const div = document.createElement("div");
+      div.className = "suggestion-item";
+      div.textContent = suggestion;
+      div.addEventListener("click", () => {
+        chatInput.value = suggestion;
+        suggestionBox.style.display = "none";
+        sendMessage(suggestion);
+      });
+      suggestionBox.appendChild(div);
+    });
+
+    const rect = chatInput.getBoundingClientRect();
+    suggestionBox.style.left = rect.left + "px";
+    suggestionBox.style.top = rect.top - matches.length * 35 + "px";
+    suggestionBox.style.width = rect.width + "px";
+    suggestionBox.style.display = "block";
   });
 });

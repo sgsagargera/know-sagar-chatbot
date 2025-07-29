@@ -582,3 +582,19 @@ body.dark-mode .suggestion-box {
 .linkedin-fab, .instagram-fab {
   animation: none;
 }
+
+
+/* Instagram FAB fix */
+.instagram-fab {
+  border: 2px solid #E4405F;
+  background-color: transparent;
+  color: #E4405F;
+}
+.instagram-fab img {
+  width: 24px;
+  height: 24px;
+  filter: invert(36%) sepia(75%) saturate(3290%) hue-rotate(320deg) brightness(96%) contrast(91%);
+}
+.instagram-fab:hover {
+  background-color: rgba(228, 64, 95, 0.1);
+}
