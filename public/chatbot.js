@@ -1,105 +1,12 @@
+
 document.addEventListener("DOMContentLoaded", () => {
-  const chatInput = document.getElementById("chat-input");
-  const chatBody = document.getElementById("chat-body");
-  const typingIndicator = document.getElementById("typing-indicator");
-  const sendButton = document.getElementById("send-btn");
-  const clearBtn = document.getElementById("clear-btn");
-  const exportBtn = document.getElementById("export-btn");
   const themeToggle = document.getElementById("themeToggle");
-
-  const botAvatar = "20250418_212238.jpg";
-  const userAvatar = "https://www.svgrepo.com/show/384674/user-chat.svg";
-
-  // Theme handling
-  const applyTheme = (theme) => {
-    document.body.classList.toggle('dark-mode', theme === 'dark');
-    themeToggle.classList.toggle('glow', theme === 'light'); // Glow only in light
-    localStorage.setItem('theme', theme);
-  };
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  applyTheme(savedTheme);
-
-  themeToggle.addEventListener('click', () => {
-    const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-    applyTheme(newTheme);
-  });
-
-  const appendMessage = (text, sender = "bot") => {
-    const bubble = document.createElement("div");
-    bubble.className = `chat-bubble ${sender}`;
-
-    const avatar = document.createElement("div");
-    avatar.className = "avatar";
-    avatar.style.backgroundImage = `url(${sender === "user" ? userAvatar : botAvatar})`;
-
-    const message = document.createElement("div");
-    message.className = "text";
-    message.textContent = text;
-
-    bubble.appendChild(avatar);
-    bubble.appendChild(message);
-    chatBody.appendChild(bubble);
-    bubble.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const sendMessage = async () => {
-    const question = chatInput.value.trim();
-    if (!question) return;
-
-    appendMessage(question, "user");
-    chatInput.value = "";
-    typingIndicator.style.display = "block";
-
-    try {
-      const res = await fetch("/ask", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question })
-      });
-
-      const data = await res.json();
-      typingIndicator.style.display = "none";
-
-      await new Promise(resolve => setTimeout(resolve, 600));
-      appendMessage(data.answer || "Sorry, I couldn't fetch a response.", "bot");
-    } catch (err) {
-      typingIndicator.style.display = "none";
-      appendMessage("❌ Error talking to bot.", "bot");
-    }
-  };
-
-  sendButton.addEventListener("click", sendMessage);
-  chatInput.addEventListener("keypress", e => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
-
-  clearBtn.addEventListener("click", () => chatBody.innerHTML = "");
-
-  exportBtn.addEventListener("click", () => {
-    const logs = [...chatBody.querySelectorAll(".chat-bubble")]
-      .map(el => el.querySelector(".text")?.textContent || "")
-      .join("\n\n");
-    const blob = new Blob([logs], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "chat_log.txt";
-    a.click();
-  });
-});
-
-
-// Update bulb icon based on current theme on page load
-document.addEventListener("DOMContentLoaded", () => {
-    const themeToggle = document.getElementById("themeToggle");
-    function updateBulbIcon() {
-        themeToggle.textContent = document.body.classList.contains("dark-mode") ? "💤" : "💡";
-    }
+  function updateBulbIcon() {
+    themeToggle.textContent = document.body.classList.contains("dark-mode") ? "💤" : "💡";
+  }
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
     updateBulbIcon();
-    themeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-        updateBulbIcon();
-    });
+  });
+  updateBulbIcon();
 });

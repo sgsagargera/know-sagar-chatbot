@@ -180,7 +180,47 @@ body.dark-mode .clear-btn {
 }
 
 
-/* Dark mode chat header fix */
+/* Enhanced background with gradient */
+body {
+  background: linear-gradient(120deg, #f0f4f9, #dbe9ff);
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+body.dark-mode {
+  background: linear-gradient(120deg, #121212, #1e1e1e);
+}
+
+/* Floating shapes for depth */
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 123, 255, 0.1);
+  filter: blur(80px);
+  animation: floatAnim 12s infinite alternate ease-in-out;
+  z-index: -1;
+}
+.shape:nth-child(1) {
+  width: 250px; height: 250px;
+  top: 10%; left: 5%;
+}
+.shape:nth-child(2) {
+  width: 200px; height: 200px;
+  bottom: 10%; right: 10%;
+  background: rgba(255, 200, 0, 0.1);
+}
+.shape:nth-child(3) {
+  width: 300px; height: 300px;
+  top: 50%; left: 40%;
+  background: rgba(123, 31, 162, 0.1);
+}
+@keyframes floatAnim {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-30px); }
+}
+
+/* Dark mode chat header */
 .chat-header {
   background-color: #007BFF;
   color: white;
@@ -190,12 +230,12 @@ body.dark-mode .chat-header {
   color: white;
 }
 
-/* LinkedIn FAB theme fix */
+/* LinkedIn FAB theme */
 .linkedin-fab {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #ffffff; /* Light mode */
+  background-color: #ffffff;
   color: #0077B5;
   border: 2px solid #0077B5;
   border-radius: 50%;
@@ -222,7 +262,7 @@ body.dark-mode .linkedin-fab {
   transform: scale(1.05);
 }
 
-/* Bulb icon hover fix */
+/* Bulb hover fix */
 .bulb-toggle {
   background: transparent;
   border: none;
