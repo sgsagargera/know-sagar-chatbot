@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Theme handling
   const applyTheme = (theme) => {
     document.body.classList.toggle('dark-mode', theme === 'dark');
-    themeToggle.classList.toggle('glow', theme === 'light');
+    themeToggle.classList.toggle('glow', theme === 'light'); // Glow only in light
     localStorage.setItem('theme', theme);
   };
   const savedTheme = localStorage.getItem('theme') || 'light';
