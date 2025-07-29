@@ -180,40 +180,24 @@ body.dark-mode .clear-btn {
 }
 
 
-/* Prevent extra page scroll */
-body {
-  overflow-y: hidden;
+/* Dark mode chat header fix */
+.chat-header {
+  background-color: #007BFF;
+  color: white;
+}
+body.dark-mode .chat-header {
+  background-color: #333;
+  color: white;
 }
 
-/* Background enhancements */
-body::before, body::after {
-  content: '';
-  position: absolute;
-  width: 250px;
-  height: 250px;
-  background: rgba(0, 123, 255, 0.08);
-  border-radius: 50%;
-  filter: blur(80px);
-  animation: floatShapes 10s infinite alternate;
-}
-body::after {
-  top: auto;
-  bottom: 50px;
-  right: 80px;
-  background: rgba(255, 200, 0, 0.08);
-}
-@keyframes floatShapes {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(25px, 25px); }
-}
-
-/* Floating LinkedIn FAB */
+/* LinkedIn FAB theme fix */
 .linkedin-fab {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #0077B5;
-  color: white;
+  background-color: #ffffff; /* Light mode */
+  color: #0077B5;
+  border: 2px solid #0077B5;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -224,21 +208,31 @@ body::after {
   transition: transform 0.3s ease, background 0.3s ease;
   z-index: 100;
 }
+body.dark-mode .linkedin-fab {
+  background-color: #2c2c2c;
+  color: white;
+  border: 2px solid white;
+}
 .linkedin-fab img {
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 .linkedin-fab:hover {
-  background-color: #005582;
   transform: scale(1.05);
 }
 
-/* Chatbot header shadow */
-.chat-header {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Bulb icon hover fix */
+.bulb-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
 }
-
-/* Button hover glow */
-button:hover {
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+.bulb-toggle:hover {
+  transform: scale(1.1);
+  background: transparent;
+  box-shadow: none;
 }

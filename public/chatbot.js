@@ -89,3 +89,17 @@ document.addEventListener("DOMContentLoaded", () => {
     a.click();
   });
 });
+
+
+// Update bulb icon based on current theme on page load
+document.addEventListener("DOMContentLoaded", () => {
+    const themeToggle = document.getElementById("themeToggle");
+    function updateBulbIcon() {
+        themeToggle.textContent = document.body.classList.contains("dark-mode") ? "💤" : "💡";
+    }
+    updateBulbIcon();
+    themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        updateBulbIcon();
+    });
+});
