@@ -39,11 +39,27 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   updateBulbIcon();
 
-  function addMessage(content, sender = "bot") {
-    const msg = document.createElement("div");
-    msg.className = `message ${sender}-message`;
-    msg.textContent = content;
-    chatBody.appendChild(msg);
+  function createMessage(content, sender) {
+    const msgContainer = document.createElement("div");
+    msgContainer.className = `chat-message ${sender}-message`;
+
+    const avatar = document.createElement("img");
+    avatar.className = "avatar";
+    avatar.src = sender === "bot" ? "20250418_212238.jpg" : "https://cdn-icons-png.flaticon.com/512/1946/1946429.png";
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.textContent = content;
+
+    if (sender === "bot") {
+      msgContainer.appendChild(avatar);
+      msgContainer.appendChild(bubble);
+    } else {
+      msgContainer.appendChild(bubble);
+      msgContainer.appendChild(avatar);
+    }
+
+    chatBody.appendChild(msgContainer);
     chatBody.scrollTop = chatBody.scrollHeight;
   }
 
@@ -51,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = customMessage || chatInput.value.trim();
     if (!message) return;
 
-    addMessage(message, "user");
+    createMessage(message, "user");
     chatInput.value = "";
     typingIndicator.style.display = "block";
     suggestionBox.style.display = "none";
@@ -71,18 +87,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!botReply || botReply.length < 2) {
           const fallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-          addMessage(fallback, 'bot');
+          createMessage(fallback, "bot");
         } else {
-          addMessage(botReply, 'bot');
+          createMessage(botReply, "bot");
         }
       } else {
         const fallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-        addMessage(fallback, 'bot');
+        createMessage(fallback, "bot");
       }
     } catch (error) {
       typingIndicator.style.display = "none";
       const fallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-      addMessage(fallback, 'bot');
+      createMessage(fallback, "bot");
       console.error("Chat API error:", error);
     }
   }
@@ -97,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   exportBtn.addEventListener("click", () => {
     let chatText = "";
-    document.querySelectorAll(".message").forEach(msg => {
+    document.querySelectorAll(".chat-message .bubble").forEach(msg => {
       chatText += msg.textContent + "\n";
     });
     const blob = new Blob([chatText], { type: "text/plain" });
@@ -139,8 +155,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const rect = chatInput.getBoundingClientRect();
     suggestionBox.style.left = rect.left + "px";
-    suggestionBox.style.top = rect.top - matches.length * 35 + "px";
+    suggestionBox.style.bottom = (window.innerHeight - rect.top + 10) + "px";
     suggestionBox.style.width = rect.width + "px";
     suggestionBox.style.display = "block";
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      suggestionBox.style.display = "none";
+    }
   });
 });
