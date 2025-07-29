@@ -182,7 +182,7 @@ body.dark-mode .clear-btn {
 
 /* Gradient background */
 body {
-  background: linear-gradient(120deg, #f0f4f9, #dbe9ff);
+  background: radial-gradient(circle at top left, #e0ecff, #c0d8ff 40%, #a8c0ff 100%);
   background-attachment: fixed;
   position: relative;
   overflow-x: hidden;
