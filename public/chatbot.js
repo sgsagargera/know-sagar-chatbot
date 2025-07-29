@@ -139,8 +139,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const rect = chatInput.getBoundingClientRect();
     suggestionBox.style.left = rect.left + "px";
-    suggestionBox.style.top = rect.top - matches.length * 35 + "px";
+    suggestionBox.style.bottom = (window.innerHeight - rect.top + 10) + "px";
     suggestionBox.style.width = rect.width + "px";
     suggestionBox.style.display = "block";
   });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      suggestionBox.style.display = "none";
+    }
+  });
 });
+
+
+// Floating particles generator
+const particleContainer = document.createElement("div");
+particleContainer.className = "particle-container";
+document.body.appendChild(particleContainer);
+
+function createParticle() {
+  const particle = document.createElement("div");
+  particle.className = "particle";
+  const size = Math.random() * 8 + 4;
+  particle.style.width = `${size}px`;
+  particle.style.height = `${size}px`;
+  particle.style.left = `${Math.random() * window.innerWidth}px`;
+  particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+  particleContainer.appendChild(particle);
+  setTimeout(() => particle.remove(), 8000);
+}
+
+setInterval(createParticle, 400);
