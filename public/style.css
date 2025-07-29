@@ -1,6 +1,4 @@
-/* ------------------------------
-   Base Styles
-------------------------------- */
+/* Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -12,6 +10,9 @@ body {
   background: #f4f6f8;
   color: #333;
   transition: background 0.4s ease, color 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Dark Mode */
@@ -24,39 +25,30 @@ body.dark-mode {
    Header Section
 ------------------------------- */
 header {
+  width: 100%;
   background: linear-gradient(90deg, #0077b5, #00aaff);
   padding: 20px;
   text-align: center;
-  color: white;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   letter-spacing: 1px;
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 30px 30px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  animation: fadeSlide 1s ease-out;
+  animation: fadeSlide 0.8s ease-out;
   position: relative;
 }
 
-/* Dark Mode Header */
 body.dark-mode header {
-  background: linear-gradient(90deg, #333, #444);
+  background: linear-gradient(90deg, #333, #555);
 }
 
-/* Glow Effect */
-header .glow-text {
-  color: #fbbc05;
-  text-shadow: 0 0 10px rgba(251, 188, 5, 0.7);
-}
-
-/* Smooth header animation */
+/* Header animation */
 @keyframes fadeSlide {
   from { opacity: 0; transform: translateY(-30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ------------------------------
-   Theme Toggle Bulb
-------------------------------- */
+/* Theme toggle bulb */
 .theme-toggle {
   position: absolute;
   top: 25px;
@@ -86,7 +78,7 @@ header .glow-text {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
-  margin: 50px auto;
+  margin-top: 40px;
   animation: floatUp 0.8s ease-out;
   transform: translateY(30px);
   opacity: 0;
@@ -119,9 +111,6 @@ body.dark-mode .chat-header {
   background: #555;
 }
 
-/* ------------------------------
-   Chat Body
-------------------------------- */
 .chat-body {
   flex: 1;
   padding: 15px;
@@ -170,9 +159,47 @@ body.dark-mode .chat-header {
   word-wrap: break-word;
 }
 
-/* Dark mode bubbles */
 body.dark-mode .chat-bubble.bot .text {
   background: #444;
   color: #fff;
 }
-body.dark-mode .
+body.dark-mode .chat-bubble.user .text {
+  background: #1e90ff;
+}
+
+.chat-footer {
+  display: flex;
+  padding: 10px;
+  background: #f8f8f8;
+  border-top: 1px solid #ddd;
+}
+body.dark-mode .chat-footer {
+  background: #333;
+  border-color: #444;
+}
+
+.chat-footer input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-right: 10px;
+  outline: none;
+}
+body.dark-mode .chat-footer input {
+  background: #444;
+  color: white;
+  border: 1px solid #555;
+}
+
+.chat-footer button {
+  background: #0077b5;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.chat-footer button:hover {
+  background: #005f8a;
+}
