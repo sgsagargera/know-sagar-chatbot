@@ -1,35 +1,37 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SagarBot | Interactive CV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Know Sagar Chatbot</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="hero-header">
-    <h1 class="title">Ask Me About <span>Sagar</span></h1>
-    <button id="themeToggle" class="bulb-toggle" aria-label="Toggle theme">💡</button>
-  </header>
+  <div class="hero">
+    <h1>Ask Me About <span class="highlight">Sagar</span> <button id="themeToggle" class="bulb">💡</button></h1>
+  </div>
 
-  <main>
-    <div class="chat-widget centered">
-      <div class="chat-header">💬 SagarBot</div>
-      <div class="chat-body" id="chat-body">
-        <div class="chat-bubble bot">
-          <div class="avatar bot-avatar"></div>
-          <div class="text">Hello! How can I assist you today?</div>
-        </div>
-      </div>
-      <div id="typing-indicator" class="typing-indicator">Sagar is typing...</div>
-      <div class="chat-footer">
-        <input id="chat-input" type="text" placeholder="Ask me about Sagar..." />
-        <button id="send-btn">Send</button>
-        <button id="export-btn" class="export-btn">📂 Export</button>
-        <button id="clear-btn" class="clear-btn">🗑️ Clear</button>
-      </div>
+  <div class="chat-widget">
+    <div class="chat-header">💬 SagarBot</div>
+    <div id="chat-body" class="chat-body">
+      <div class="message bot-message">Hello! How can I assist you today?</div>
     </div>
-  </main>
+    <div id="typing-indicator" class="typing-indicator">Sagar is typing...</div>
+    <div class="chat-footer">
+      <input type="text" id="chat-input" placeholder="Ask me about Sagar..."/>
+      <button id="send-btn">Send</button>
+      <button id="export-btn">Export</button>
+      <button id="clear-btn">Clear</button>
+    </div>
+  </div>
+
+  <button class="linkedin-fab" onclick="window.open('https://www.linkedin.com/in/sagar-gera-374089100', '_blank')">
+    <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn"/>
+  </button>
+  <button class="instagram-fab" onclick="window.open('https://www.instagram.com/sagar.gera?igsh=MXV4c2JvaHVmdXh2bA==', '_blank')">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram"/>
+  </button>
 
   <script src="chatbot.js"></script>
 </body>

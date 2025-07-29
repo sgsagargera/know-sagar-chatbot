@@ -1,180 +1,101 @@
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f7f9fc;
-  margin: 0;
-  transition: background 0.4s ease, color 0.4s ease;
-  text-align: center;
-}
-body.dark-mode {
-  background: #1a1a1a;
-  color: white;
-}
 
-.hero-header {
-  margin-top: 20px;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 50px;
-  padding: 15px 40px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  animation: slideDown 0.8s ease;
-}
-.title span {
-  background: linear-gradient(to right, #007acc, #00d4ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: bold;
-}
-body.dark-mode .hero-header {
-  background: rgba(30, 30, 30, 0.8);
-}
-body.dark-mode .title span {
-  background: linear-gradient(to right, #ffcc00, #ffaa00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
 
-/* Bulb Toggle */
-.bulb-toggle {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-left: 15px;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-.bulb-toggle.glow {
-  color: #ffcc00;
-  text-shadow: 0 0 15px #ffcc00;
-}
-
-/* Chat Widget */
-.chat-widget {
-  width: 400px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-  display: flex;
-  flex-direction: column;
-  margin: 50px auto;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeIn 1s forwards;
-}
-body.dark-mode .chat-widget {
-  background: #2b2b2b;
-  color: white;
-}
-.chat-header {
-  background: #007acc;
-  color: white;
-  padding: 12px;
-  font-weight: bold;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-body.dark-mode .chat-header {
-  background: #005fa3;
-}
-.chat-body {
-  padding: 15px;
-  height: 300px;
+/* Improved suggestion dropdown */
+.suggestion-box {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: none;
+  z-index: 1000;
+  max-height: 150px;
   overflow-y: auto;
 }
-.chat-bubble {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 10px;
+
+body.dark-mode .suggestion-box {
+  background: rgba(51, 51, 51, 0.95);
+  border: 1px solid #555;
+  color: white;
 }
-.avatar {
-  width: 36px;
-  height: 36px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-.bot-avatar {
-  background-image: url("20250418_212238.jpg");
-}
-.text {
-  background: #f1f1f1;
+
+.suggestion-item {
   padding: 10px;
-  border-radius: 12px;
-  max-width: 70%;
-}
-.chat-bubble.user .text {
-  background: #007acc;
-  color: white;
-}
-body.dark-mode .text {
-  background: #3b3b3b;
-  color: white;
-}
-.typing-indicator {
-  padding: 5px 15px;
-  display: none;
-  font-style: italic;
-  font-size: 14px;
-  color: #555;
-}
-body.dark-mode .typing-indicator {
-  color: #ddd;
-}
-.chat-footer {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-}
-body.dark-mode .chat-footer {
-  border-top: 1px solid #555;
-}
-.chat-footer input {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  margin-right: 5px;
-}
-body.dark-mode .chat-footer input {
-  background: #3a3a3a;
-  color: white;
-  border: 1px solid #666;
-}
-.chat-footer button {
-  padding: 8px 12px;
-  border: none;
   cursor: pointer;
-  background: #007acc;
-  color: white;
-  border-radius: 6px;
-  transition: background 0.3s ease;
-}
-.chat-footer button:hover {
-  background: #005fa3;
-}
-.export-btn, .clear-btn {
-  background: #f0f0f0;
-  color: black;
-  margin-left: 5px;
-}
-.export-btn:hover, .clear-btn:hover {
-  background: #ddd;
-}
-body.dark-mode .export-btn, 
-body.dark-mode .clear-btn {
-  background: #555;
-  color: white;
+  transition: background-color 0.3s ease;
 }
 
-@keyframes slideDown {
-  from { transform: translateY(-30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+.suggestion-item:hover {
+  background-color: #f0f0f0;
 }
 
-@keyframes fadeIn {
-  to { opacity: 1; transform: translateY(0); }
+body.dark-mode .suggestion-item:hover {
+  background-color: #555;
+}
+
+/* Instagram FAB fixed */
+.instagram-fab {
+  border: 2px solid #E4405F;
+  background-color: transparent;
+  color: #E4405F;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.instagram-fab img {
+  width: 24px;
+  height: 24px;
+  filter: invert(36%) sepia(75%) saturate(3290%) hue-rotate(320deg) brightness(96%) contrast(91%);
+}
+
+.instagram-fab:hover {
+  background-color: rgba(228, 64, 95, 0.1);
+}
+
+/* Bottom gradient and floating particles */
+body {
+  position: relative;
+}
+
+.bottom-gradient {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
+  pointer-events: none;
+  z-index: -1;
+}
+
+body.dark-mode .bottom-gradient {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.1), transparent);
+}
+
+
+/* Floating particles effect */
+.particle {
+  position: fixed;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatUp 8s infinite ease-in-out;
+  z-index: 0;
+}
+
+body.dark-mode .particle {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-200px) scale(0.8);
+    opacity: 0;
+  }
 }

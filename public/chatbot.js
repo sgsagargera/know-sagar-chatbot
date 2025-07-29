@@ -1,91 +1,172 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const chatInput = document.getElementById("chat-input");
+  const sendButton = document.getElementById("send-btn");
   const chatBody = document.getElementById("chat-body");
   const typingIndicator = document.getElementById("typing-indicator");
-  const sendButton = document.getElementById("send-btn");
-  const clearBtn = document.getElementById("clear-btn");
-  const exportBtn = document.getElementById("export-btn");
   const themeToggle = document.getElementById("themeToggle");
+  const exportBtn = document.getElementById("export-btn");
+  const clearBtn = document.getElementById("clear-btn");
 
-  const botAvatar = "20250418_212238.jpg";
-  const userAvatar = "https://www.svgrepo.com/show/384674/user-chat.svg";
+  const fallbackResponses = [
+    "🤔 Hmm… that's outside my expertise. Try asking about Sagar’s professional skills.",
+    "😅 I’d love to answer that, but I’m designed to talk about Sagar’s career and experience.",
+    "😂 That’s a fun one, but let's stick to Sagar’s professional journey!",
+    "👨‍💻 I specialize in answering questions about Sagar’s work and expertise. Try asking something related!"
+  ];
 
-  // Theme handling
-  const applyTheme = (theme) => {
-    document.body.classList.toggle('dark-mode', theme === 'dark');
-    themeToggle.classList.toggle('glow', theme === 'light'); // Glow only in light
-    localStorage.setItem('theme', theme);
-  };
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  applyTheme(savedTheme);
+  const suggestions = [
+    "Tell me about Sagar's skills",
+    "Show Sagar's work experience",
+    "What technologies does Sagar know?",
+    "Give me Sagar's LinkedIn",
+    "What are Sagar's achievements?",
+    "Does Sagar know SAP Hybris?",
+    "Tell me about Sagar's career",
+    "What are Sagar's data analytics skills?"
+  ];
 
-  themeToggle.addEventListener('click', () => {
-    const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-    applyTheme(newTheme);
+  const suggestionBox = document.createElement("div");
+  suggestionBox.className = "suggestion-box";
+  document.body.appendChild(suggestionBox);
+
+  function updateBulbIcon() {
+    themeToggle.textContent = document.body.classList.contains("dark-mode") ? "💤" : "💡";
+  }
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    updateBulbIcon();
   });
+  updateBulbIcon();
 
-  const appendMessage = (text, sender = "bot") => {
-    const bubble = document.createElement("div");
-    bubble.className = `chat-bubble ${sender}`;
+  function addMessage(content, sender = "bot") {
+    const msg = document.createElement("div");
+    msg.className = `message ${sender}-message`;
+    msg.textContent = content;
+    chatBody.appendChild(msg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
 
-    const avatar = document.createElement("div");
-    avatar.className = "avatar";
-    avatar.style.backgroundImage = `url(${sender === "user" ? userAvatar : botAvatar})`;
+  async function sendMessage(customMessage = null) {
+    const message = customMessage || chatInput.value.trim();
+    if (!message) return;
 
-    const message = document.createElement("div");
-    message.className = "text";
-    message.textContent = text;
-
-    bubble.appendChild(avatar);
-    bubble.appendChild(message);
-    chatBody.appendChild(bubble);
-    bubble.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const sendMessage = async () => {
-    const question = chatInput.value.trim();
-    if (!question) return;
-
-    appendMessage(question, "user");
+    addMessage(message, "user");
     chatInput.value = "";
     typingIndicator.style.display = "block";
+    suggestionBox.style.display = "none";
 
     try {
-      const res = await fetch("/ask", {
+      const response = await fetch("/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question })
+        body: JSON.stringify({ message }),
       });
 
-      const data = await res.json();
       typingIndicator.style.display = "none";
 
-      await new Promise(resolve => setTimeout(resolve, 600));
-      appendMessage(data.answer || "Sorry, I couldn't fetch a response.", "bot");
-    } catch (err) {
+      if (response.ok) {
+        const data = await response.json();
+        const botReply = data.reply?.trim();
+
+        if (!botReply || botReply.length < 2) {
+          const fallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+          addMessage(fallback);
+        } else {
+          addMessage(botReply);
+        }
+      } else {
+        const fallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+        addMessage(fallback);
+      }
+    } catch (error) {
       typingIndicator.style.display = "none";
-      appendMessage("❌ Error talking to bot.", "bot");
+      const fallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+      addMessage(fallback);
+      console.error("Chat API error:", error);
     }
-  };
+  }
 
-  sendButton.addEventListener("click", sendMessage);
-  chatInput.addEventListener("keypress", e => {
+  sendButton.addEventListener("click", () => sendMessage());
+  chatInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       sendMessage();
     }
   });
 
-  clearBtn.addEventListener("click", () => chatBody.innerHTML = "");
-
   exportBtn.addEventListener("click", () => {
-    const logs = [...chatBody.querySelectorAll(".chat-bubble")]
-      .map(el => el.querySelector(".text")?.textContent || "")
-      .join("\n\n");
-    const blob = new Blob([logs], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "chat_log.txt";
-    a.click();
+    let chatText = "";
+    document.querySelectorAll(".message").forEach(msg => {
+      chatText += msg.textContent + "\n";
+    });
+    const blob = new Blob([chatText], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "chat_history.txt";
+    link.click();
+  });
+
+  clearBtn.addEventListener("click", () => {
+    chatBody.innerHTML = "";
+  });
+
+  chatInput.addEventListener("input", () => {
+    const query = chatInput.value.toLowerCase();
+    suggestionBox.innerHTML = "";
+    if (query.length === 0) {
+      suggestionBox.style.display = "none";
+      return;
+    }
+
+    const matches = suggestions.filter(s => s.toLowerCase().includes(query));
+    if (matches.length === 0) {
+      suggestionBox.style.display = "none";
+      return;
+    }
+
+    matches.forEach(suggestion => {
+      const div = document.createElement("div");
+      div.className = "suggestion-item";
+      div.textContent = suggestion;
+      div.addEventListener("click", () => {
+        chatInput.value = suggestion;
+        suggestionBox.style.display = "none";
+        sendMessage(suggestion);
+      });
+      suggestionBox.appendChild(div);
+    });
+
+    const rect = chatInput.getBoundingClientRect();
+    suggestionBox.style.left = rect.left + "px";
+    suggestionBox.style.bottom = (window.innerHeight - rect.top + 10) + "px";
+    suggestionBox.style.width = rect.width + "px";
+    suggestionBox.style.display = "block";
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      suggestionBox.style.display = "none";
+    }
   });
 });
+
+
+// Floating particles generator
+const particleContainer = document.createElement("div");
+particleContainer.className = "particle-container";
+document.body.appendChild(particleContainer);
+
+function createParticle() {
+  const particle = document.createElement("div");
+  particle.className = "particle";
+  const size = Math.random() * 8 + 4;
+  particle.style.width = `${size}px`;
+  particle.style.height = `${size}px`;
+  particle.style.left = `${Math.random() * window.innerWidth}px`;
+  particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+  particleContainer.appendChild(particle);
+  setTimeout(() => particle.remove(), 8000);
+}
+
+setInterval(createParticle, 400);
