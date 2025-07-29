@@ -1,79 +1,42 @@
-const express = require('express');
-const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config();
-const axios = require('axios');
+
+const express = require("express");
+const bodyParser = require("body-parser");
+const fetch = require("node-fetch");
 
 const app = express();
+app.use(bodyParser.json());
 const PORT = process.env.PORT || 3000;
 
-// ✅ Fallback in case resume.txt is missing
-let resumeText = 'Resume content not available.';
-try {
-  resumeText = fs.readFileSync(path.join(__dirname, 'data', 'resume.txt'), 'utf-8');
-} catch (error) {
-  console.warn('⚠️ Could not load resume.txt:', error.message);
-}
-
-app.use(cors());
-app.use(express.json());
-
-// ✅ Serve static frontend files
-app.use(express.static(path.join(__dirname, 'public')));
-
-// ✅ Home route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// ✅ Chat API route using OpenRouter
-app.post('/ask', async (req, res) => {
-  const question = req.body.question;
-  if (!question) {
-    return res.status(400).json({ error: 'Question is required' });
-  }
+app.post("/chat", async (req, res) => {
+  console.log("📩 Incoming /chat request:", req.body);
 
   try {
-    const response = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
-      {
-        model: 'openai/gpt-3.5-turbo',  // ✅ Corrected model name
-        messages: [
-          {
-            role: 'system',
-            content: `You are a chatbot representing Sagar Gera. Use the following resume content to answer questions:\n\n${resumeText}`
-          },
-          { role: 'user', content: question }
-        ]
+    const { message } = req.body;
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json"
       },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+      body: JSON.stringify({
+        model: "gpt-4",
+        messages: [{ role: "user", content: message }]
+      })
+    });
 
-    const answer = response.data.choices[0].message.content;
-    res.json({ answer });
+    console.log("📤 OpenRouter API status:", response.status);
 
+    const data = await response.json();
+    console.log("✅ OpenRouter API response:", data);
+
+    const reply = data.choices?.[0]?.message?.content || "I couldn't find an answer.";
+
+    res.json({ reply });
   } catch (error) {
-    if (error.response) {
-      console.error('❌ OpenRouter API Error:', {
-        status: error.response.status,
-        data: error.response.data,
-      });
-    } else if (error.request) {
-      console.error('❌ No response received from OpenRouter:', error.request);
-    } else {
-      console.error('❌ Error setting up request to OpenRouter:', error.message);
-    }
-    res.status(500).json({ error: 'Error talking to bot.' });
+    console.error("❌ Error in /chat:", error);
+    res.status(500).json({ reply: "Error processing request" });
   }
 });
 
-// ✅ Start server
-app.listen(PORT, () => {
-  console.log(`✅ Server is running on http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
