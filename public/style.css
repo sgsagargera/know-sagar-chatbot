@@ -180,7 +180,47 @@ body.dark-mode .clear-btn {
 }
 
 
-/* Particle container */
+/* Gradient background */
+body {
+  background: linear-gradient(120deg, #f0f4f9, #dbe9ff);
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+body.dark-mode {
+  background: linear-gradient(120deg, #121212, #1e1e1e);
+}
+
+/* Glassmorphic chat widget */
+.chat-widget {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+body.dark-mode .chat-widget {
+  background: rgba(40, 40, 40, 0.75);
+}
+
+/* Floating shapes for depth */
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 123, 255, 0.1);
+  filter: blur(100px);
+  animation: floatAnim 12s infinite alternate ease-in-out;
+  z-index: -2;
+}
+.shape:nth-child(1) { width: 250px; height: 250px; top: 10%; left: 5%; }
+.shape:nth-child(2) { width: 200px; height: 200px; bottom: 10%; right: 10%; background: rgba(255, 200, 0, 0.1); }
+.shape:nth-child(3) { width: 300px; height: 300px; top: 50%; left: 40%; background: rgba(123, 31, 162, 0.1); }
+@keyframes floatAnim {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-30px); }
+}
+
+/* Animated background particles */
 .particle {
   position: absolute;
   background: rgba(255, 255, 255, 0.5);
@@ -189,13 +229,73 @@ body.dark-mode .clear-btn {
   animation: floatParticle 20s infinite linear;
   z-index: -1;
 }
-
 @keyframes floatParticle {
   from { transform: translateY(0) translateX(0); opacity: 0.8; }
   to { transform: translateY(-100vh) translateX(50px); opacity: 0; }
 }
-
-/* Dark mode particle color adjustment */
 body.dark-mode .particle {
   background: rgba(200, 200, 200, 0.3);
 }
+
+/* Parallax effect */
+body:hover .shape {
+  transform: translateY(-10px) scale(1.05);
+  transition: transform 0.5s ease;
+}
+
+/* Header glow */
+.hero-header {
+  animation: headerGlow 2s ease-in-out infinite alternate;
+}
+@keyframes headerGlow {
+  from { box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); }
+  to { box-shadow: 0 0 20px rgba(0, 123, 255, 0.6); }
+}
+
+/* Floating LinkedIn FAB */
+.linkedin-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ffffff;
+  color: #0077B5;
+  border: 2px solid #0077B5;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, background 0.3s ease;
+  z-index: 100;
+}
+body.dark-mode .linkedin-fab {
+  background-color: #2c2c2c;
+  color: white;
+  border: 2px solid white;
+}
+.linkedin-fab img {
+  width: 24px;
+  height: 24px;
+}
+.linkedin-fab:hover { transform: scale(1.05); }
+
+/* Dark mode chat header */
+.chat-header {
+  background-color: #007BFF;
+  color: white;
+}
+body.dark-mode .chat-header {
+  background-color: #333;
+  color: white;
+}
+
+/* Bulb icon hover */
+.bulb-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.bulb-toggle:hover { transform: scale(1.1); }
