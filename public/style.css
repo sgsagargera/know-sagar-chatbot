@@ -318,3 +318,35 @@ body.dark-mode .chat-header {
 body.dark-mode .chat-widget::before {
   background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 70%);
 }
+
+
+.quick-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.suggestion-btn {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.suggestion-btn:hover {
+  background-color: #0056b3;
+}
+
+body.dark-mode .suggestion-btn {
+  background-color: #555;
+}
+
+body.dark-mode .suggestion-btn:hover {
+  background-color: #777;
+}
