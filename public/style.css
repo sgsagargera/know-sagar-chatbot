@@ -649,29 +649,52 @@ body.dark-mode .message.bot-message {
 }
 
 
-/* Avatar alignment fix for chat */
-.chat-message {
-  display: flex;
-  align-items: flex-end;
-  margin: 8px 0;
-}
-
-.bot-message {
-  justify-content: flex-start;
-  flex-direction: row;
-}
-
-.user-message {
-  justify-content: flex-end;
-  flex-direction: row-reverse;
+/* Avatar sizing and alignment fix */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .bot-message .avatar {
   margin-right: 8px;
-  margin-left: 0;
 }
 
 .user-message .avatar {
   margin-left: 8px;
-  margin-right: 0;
+}
+
+/* Improved suggestion dropdown */
+.suggestion-box {
+  position: absolute;
+  bottom: 60px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: calc(100% - 20px);
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+  padding: 5px 0;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+body.dark-mode .suggestion-box {
+  background: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+body.dark-mode .suggestion-item:hover {
+  background-color: #555;
 }
