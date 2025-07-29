@@ -180,54 +180,11 @@ body.dark-mode .clear-btn {
 }
 
 
-/* High-end abstract background */
-body {
-  background: linear-gradient(120deg, #e0eafc, #cfdef3);
-  background-attachment: fixed;
-}
-body.dark-mode {
-  background: linear-gradient(120deg, #1c1c1c, #2c2c2c);
-}
-
-/* Floating shapes for modern look */
-body::before, body::after {
-  content: '';
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 50%;
-  top: -100px;
-  left: -100px;
-  filter: blur(100px);
-  animation: floatShapes 10s infinite alternate;
-}
-body::after {
-  top: auto;
-  bottom: -100px;
-  right: -100px;
-  background: rgba(0, 123, 255, 0.15);
-}
-
-@keyframes floatShapes {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(30px, 30px); }
-}
-
-/* Glassmorphic chatbox */
-.chat-widget {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(15px);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
-  border-radius: 20px;
-}
-body.dark-mode .chat-widget {
-  background: rgba(40, 40, 40, 0.6);
-}
-
-/* LinkedIn button styling */
+/* LinkedIn button placed below chatbot */
 .linkedin-container {
-  margin-top: 10px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 .linkedin-button {
   display: inline-flex;
@@ -248,20 +205,4 @@ body.dark-mode .chat-widget {
 .linkedin-icon {
   width: 20px;
   height: 20px;
-}
-
-/* Hover effects for buttons */
-button:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
-  transition: all 0.3s ease;
-}
-
-/* Fade-in animation */
-main, header, .chat-widget {
-  animation: fadeIn 1s ease-in-out;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
 }
