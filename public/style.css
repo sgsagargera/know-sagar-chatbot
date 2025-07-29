@@ -1,152 +1,178 @@
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f7f9fc;
+/* ------------------------------
+   Base Styles
+------------------------------- */
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: #f4f6f8;
+  color: #333;
   transition: background 0.4s ease, color 0.4s ease;
-  text-align: center;
 }
+
+/* Dark Mode */
 body.dark-mode {
-  background: #1a1a1a;
+  background: #121212;
+  color: #fff;
+}
+
+/* ------------------------------
+   Header Section
+------------------------------- */
+header {
+  background: linear-gradient(90deg, #0077b5, #00aaff);
+  padding: 20px;
+  text-align: center;
   color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeSlide 1s ease-out;
+  position: relative;
 }
 
-.hero-header {
-  margin-top: 20px;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 50px;
-  padding: 15px 40px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  animation: slideDown 0.8s ease;
-}
-.title span {
-  background: linear-gradient(to right, #007acc, #00d4ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: bold;
-}
-body.dark-mode .hero-header {
-  background: rgba(30, 30, 30, 0.8);
-}
-body.dark-mode .title span {
-  background: linear-gradient(to right, #ffcc00, #ffaa00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Dark Mode Header */
+body.dark-mode header {
+  background: linear-gradient(90deg, #333, #444);
 }
 
-/* Bulb Toggle */
-.bulb-toggle {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
+/* Glow Effect */
+header .glow-text {
+  color: #fbbc05;
+  text-shadow: 0 0 10px rgba(251, 188, 5, 0.7);
+}
+
+/* Smooth header animation */
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ------------------------------
+   Theme Toggle Bulb
+------------------------------- */
+.theme-toggle {
+  position: absolute;
+  top: 25px;
+  right: 30px;
   cursor: pointer;
-  margin-left: 15px;
-  transition: transform 0.3s ease, color 0.3s ease;
+  font-size: 1.8rem;
+  transition: transform 0.3s ease;
 }
-.bulb-toggle.glow {
-  color: #ffcc00;
-  text-shadow: 0 0 15px #ffcc00;
+.theme-toggle:hover {
+  transform: rotate(20deg);
+}
+.theme-toggle .bulb.on {
+  color: #fbbc05;
+  text-shadow: 0 0 12px #fbbc05;
+}
+.theme-toggle .bulb.off {
+  color: #ccc;
 }
 
-/* Chat Widget */
+/* ------------------------------
+   Chat Widget
+------------------------------- */
 .chat-widget {
   width: 400px;
   background: white;
-  border-radius: 12px;
+  border-radius: 15px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   margin: 50px auto;
+  animation: floatUp 0.8s ease-out;
+  transform: translateY(30px);
+  opacity: 0;
+  animation-fill-mode: forwards;
+  overflow: hidden;
 }
+
 body.dark-mode .chat-widget {
   background: #2e2e2e;
   color: white;
 }
+
+@keyframes floatUp {
+  0% { transform: translateY(30px) scale(0.95); opacity: 0; }
+  60% { transform: translateY(-10px) scale(1.02); opacity: 1; }
+  100% { transform: translateY(0) scale(1); }
+}
+
 .chat-header {
-  background: #007acc;
+  background: #0077b5;
   color: white;
-  padding: 12px;
-  font-weight: bold;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-.chat-body {
   padding: 15px;
-  height: 300px;
-  overflow-y: auto;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+body.dark-mode .chat-header {
+  background: #555;
+}
+
+/* ------------------------------
+   Chat Body
+------------------------------- */
+.chat-body {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
 .chat-bubble {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  animation: slideMessage 0.4s ease;
 }
-.avatar {
-  width: 36px;
-  height: 36px;
+@keyframes slideMessage {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.chat-bubble.bot .text {
+  background: #e1f0ff;
+  color: #333;
+}
+.chat-bubble.user .text {
+  background: #0077b5;
+  color: white;
+  margin-left: auto;
+}
+
+.chat-bubble .avatar {
+  width: 35px;
+  height: 35px;
   background-size: cover;
   background-position: center;
   border-radius: 50%;
   margin-right: 10px;
 }
-.bot-avatar {
-  background-image: url("20250418_212238.jpg");
-}
-.text {
-  background: #f1f1f1;
-  padding: 10px;
-  border-radius: 12px;
-  max-width: 70%;
-}
-.chat-bubble.user .text {
-  background: #007acc;
-  color: white;
-}
-body.dark-mode .text {
-  background: #444;
-}
-.typing-indicator {
-  padding: 5px 15px;
-  display: none;
-  font-style: italic;
-  font-size: 14px;
-}
-.chat-footer {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-}
-.chat-footer input {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  margin-right: 5px;
-}
-.chat-footer button {
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-  background: #007acc;
-  color: white;
-  border-radius: 6px;
-  transition: background 0.3s ease;
-}
-.chat-footer button:hover {
-  background: #005fa3;
-}
-.export-btn, .clear-btn {
-  background: #f0f0f0;
-  color: black;
-  margin-left: 5px;
-}
-.export-btn:hover, .clear-btn:hover {
-  background: #ddd;
+.chat-bubble.user .avatar {
+  margin-left: 10px;
+  margin-right: 0;
 }
 
-@keyframes slideDown {
-  from { transform: translateY(-30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+.chat-bubble .text {
+  padding: 10px 15px;
+  border-radius: 15px;
+  max-width: 70%;
+  word-wrap: break-word;
 }
+
+/* Dark mode bubbles */
+body.dark-mode .chat-bubble.bot .text {
+  background: #444;
+  color: #fff;
+}
+body.dark-mode .
