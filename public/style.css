@@ -465,3 +465,82 @@ body.dark-mode .suggestion-item:hover {
 body.dark-mode .chat-widget:hover {
   box-shadow: 0 0 25px rgba(255, 255, 255, 0.3), 0 0 35px rgba(255, 255, 255, 0.2);
 }
+
+
+/* Scaling animation for chatbot widget on hover */
+.chat-widget {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.chat-widget:hover {
+  transform: scale(1.02);
+}
+
+
+/* Vertical FABs */
+.linkedin-fab {
+  bottom: 80px;
+  right: 20px;
+}
+.instagram-fab {
+  bottom: 20px;
+  right: 20px;
+  background-color: transparent;
+  border: 2px solid #E4405F;
+  color: #E4405F;
+}
+.instagram-fab img {
+  filter: invert(36%) sepia(75%) saturate(3290%) hue-rotate(320deg) brightness(96%) contrast(91%);
+}
+.instagram-fab:hover {
+  background-color: rgba(228, 64, 95, 0.1);
+}
+
+/* Suggestions box improvements */
+.suggestion-box {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 1000;
+  max-height: 150px;
+  overflow-y: auto;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+body.dark-mode .suggestion-box {
+  background: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+body.dark-mode .suggestion-item:hover {
+  background-color: #555;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Glass-like effect for suggestions dropdown */
+.suggestion-box {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+body.dark-mode .suggestion-box {
+  background: rgba(51, 51, 51, 0.7);
+}

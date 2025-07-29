@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeToggle = document.getElementById("themeToggle");
   const exportBtn = document.getElementById("export-btn");
   const clearBtn = document.getElementById("clear-btn");
+  const suggestionBox = document.createElement("div");
+
+  suggestionBox.className = "suggestion-box";
+  document.body.appendChild(suggestionBox);
 
   const fallbackResponses = [
     "🤔 Hmm… that's outside my expertise. Try asking about Sagar’s professional skills.",
@@ -25,10 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "Tell me about Sagar's career",
     "What are Sagar's data analytics skills?"
   ];
-
-  const suggestionBox = document.createElement("div");
-  suggestionBox.className = "suggestion-box";
-  document.body.appendChild(suggestionBox);
 
   function updateBulbIcon() {
     themeToggle.textContent = document.body.classList.contains("dark-mode") ? "💤" : "💡";
@@ -57,11 +57,19 @@ document.addEventListener("DOMContentLoaded", () => {
     typingIndicator.style.display = "block";
 
     try {
-      const response = await fetch("/chat", {
+      let response = await fetch("/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
       });
+
+      if (!response.ok) {
+        response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message }),
+        });
+      }
 
       typingIndicator.style.display = "none";
 
@@ -95,7 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Export chat history
   exportBtn.addEventListener("click", () => {
     let chatText = "";
     document.querySelectorAll(".message").forEach(msg => {
@@ -108,12 +115,10 @@ document.addEventListener("DOMContentLoaded", () => {
     link.click();
   });
 
-  // Clear chat
   clearBtn.addEventListener("click", () => {
     chatBody.innerHTML = "";
   });
 
-  // Type-ahead suggestions
   chatInput.addEventListener("input", () => {
     const query = chatInput.value.toLowerCase();
     suggestionBox.innerHTML = "";
@@ -142,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const rect = chatInput.getBoundingClientRect();
     suggestionBox.style.left = rect.left + "px";
-    suggestionBox.style.top = rect.bottom + "px";
+    suggestionBox.style.top = rect.top - 150 + "px"; // show above input
     suggestionBox.style.width = rect.width + "px";
     suggestionBox.style.display = "block";
   });
