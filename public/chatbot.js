@@ -71,18 +71,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!botReply || botReply.length < 2) {
           const fallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-          addMessage(fallback);
+          addMessage(fallback, 'bot');
         } else {
-          addMessage(botReply);
+          addMessage(botReply, 'bot');
         }
       } else {
         const fallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-        addMessage(fallback);
+        addMessage(fallback, 'bot');
       }
     } catch (error) {
       typingIndicator.style.display = "none";
       const fallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-      addMessage(fallback);
+      addMessage(fallback, 'bot');
       console.error("Chat API error:", error);
     }
   }
