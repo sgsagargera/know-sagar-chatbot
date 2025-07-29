@@ -350,3 +350,118 @@ body.dark-mode .suggestion-btn {
 body.dark-mode .suggestion-btn:hover {
   background-color: #777;
 }
+
+
+.suggestion-box {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 1000;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+body.dark-mode .suggestion-box {
+  background: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+.suggestion-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+body.dark-mode .suggestion-item:hover {
+  background-color: #555;
+}
+
+/* Instagram FAB */
+.instagram-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 80px;
+  background-color: #E4405F;
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, background 0.3s ease;
+  z-index: 100;
+}
+.instagram-fab img {
+  width: 24px;
+  height: 24px;
+}
+.instagram-fab:hover {
+  transform: scale(1.05);
+}
+
+
+/* Floating animation for social FABs */
+@keyframes floatPulse {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-5px) scale(1.05); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+.linkedin-fab, .instagram-fab {
+  animation: floatPulse 3s infinite ease-in-out;
+}
+
+
+/* Tooltip styles for FABs */
+.linkedin-fab::after, .instagram-fab::after {
+  content: attr(title);
+  position: absolute;
+  right: 60px;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.linkedin-fab:hover::after, .instagram-fab:hover::after {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.instagram-fab {
+  right: 80px;
+}
+
+
+/* Shadow glow effect on hover for FABs */
+.linkedin-fab:hover, .instagram-fab:hover {
+  box-shadow: 0 0 20px rgba(0, 123, 255, 0.5), 0 0 30px rgba(0, 123, 255, 0.3);
+}
+
+.instagram-fab:hover {
+  box-shadow: 0 0 20px rgba(228, 64, 95, 0.5), 0 0 30px rgba(228, 64, 95, 0.3);
+}
+
+
+/* Shadow glow effect for chatbot widget */
+.chat-widget:hover {
+  box-shadow: 0 0 25px rgba(0, 123, 255, 0.4), 0 0 35px rgba(0, 123, 255, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+body.dark-mode .chat-widget:hover {
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.3), 0 0 35px rgba(255, 255, 255, 0.2);
+}

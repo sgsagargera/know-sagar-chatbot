@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatBody = document.getElementById("chat-body");
   const typingIndicator = document.getElementById("typing-indicator");
   const themeToggle = document.getElementById("themeToggle");
-  const suggestionsContainer = document.querySelector(".quick-suggestions");
+  const exportBtn = document.getElementById("export-btn");
+  const clearBtn = document.getElementById("clear-btn");
 
   const fallbackResponses = [
     "🤔 Hmm… that's outside my expertise. Try asking about Sagar’s professional skills.",
@@ -25,17 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
     "What are Sagar's data analytics skills?"
   ];
 
-  function loadSuggestions() {
-    suggestionsContainer.innerHTML = "";
-    const shuffled = suggestionPool.sort(() => 0.5 - Math.random());
-    shuffled.slice(0, 4).forEach(suggestion => {
-      const btn = document.createElement("button");
-      btn.className = "suggestion-btn";
-      btn.textContent = suggestion;
-      btn.addEventListener("click", () => sendMessage(suggestion));
-      suggestionsContainer.appendChild(btn);
-    });
-  }
+  const suggestionBox = document.createElement("div");
+  suggestionBox.className = "suggestion-box";
+  document.body.appendChild(suggestionBox);
 
   function updateBulbIcon() {
     themeToggle.textContent = document.body.classList.contains("dark-mode") ? "💤" : "💡";
@@ -60,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     addMessage(message, "user");
     chatInput.value = "";
-
+    suggestionBox.style.display = "none";
     typingIndicator.style.display = "block";
 
     try {
@@ -92,9 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
       addMessage(fallback);
       console.error("Chat API error:", error);
     }
-
-    // Refresh suggestions after each message
-    loadSuggestions();
   }
 
   sendButton.addEventListener("click", () => sendMessage());
@@ -105,6 +95,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Initial load of suggestions
-  loadSuggestions();
+  // Export chat history
+  exportBtn.addEventListener("click", () => {
+    let chatText = "";
+    document.querySelectorAll(".message").forEach(msg => {
+      chatText += msg.textContent + "\n";
+    });
+    const blob = new Blob([chatText], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "chat_history.txt";
+    link.click();
+  });
+
+  // Clear chat
+  clearBtn.addEventListener("click", () => {
+    chatBody.innerHTML = "";
+  });
+
+  // Type-ahead suggestions
+  chatInput.addEventListener("input", () => {
+    const query = chatInput.value.toLowerCase();
+    suggestionBox.innerHTML = "";
+    if (query.length === 0) {
+      suggestionBox.style.display = "none";
+      return;
+    }
+
+    const matches = suggestionPool.filter(s => s.toLowerCase().includes(query));
+    if (matches.length === 0) {
+      suggestionBox.style.display = "none";
+      return;
+    }
+
+    matches.forEach(suggestion => {
+      const div = document.createElement("div");
+      div.className = "suggestion-item";
+      div.textContent = suggestion;
+      div.addEventListener("click", () => {
+        chatInput.value = suggestion;
+        suggestionBox.style.display = "none";
+        sendMessage(suggestion);
+      });
+      suggestionBox.appendChild(div);
+    });
+
+    const rect = chatInput.getBoundingClientRect();
+    suggestionBox.style.left = rect.left + "px";
+    suggestionBox.style.top = rect.bottom + "px";
+    suggestionBox.style.width = rect.width + "px";
+    suggestionBox.style.display = "block";
+  });
 });
