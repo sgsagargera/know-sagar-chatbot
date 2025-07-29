@@ -647,3 +647,31 @@ body.dark-mode .message.bot-message {
   align-self: flex-end;
   display: inline-block;
 }
+
+
+/* Avatar alignment fix for chat */
+.chat-message {
+  display: flex;
+  align-items: flex-end;
+  margin: 8px 0;
+}
+
+.bot-message {
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.user-message {
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.bot-message .avatar {
+  margin-right: 8px;
+  margin-left: 0;
+}
+
+.user-message .avatar {
+  margin-left: 8px;
+  margin-right: 0;
+}
